@@ -1,0 +1,253 @@
+/* General Body Styling */
+body {
+  font-family: var(--font-primary, 'Merriweather', serif);
+  font-size: 20px !important;
+  background: var(--color-bg, #ffffff);
+  color: #002244 !important;
+  line-height: 1.6;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 950px;
+  padding: 20px;
+  margin: auto;
+  flex: 1;
+}
+
+header, header h1, header h2, header h4,
+.contact p, .banner-tagline, .home-name {
+  text-align: center;
+}
+
+header h1 {
+  margin-bottom: 10px;
+}
+
+header address {
+  margin-top: 0;
+  font-style: normal;
+  line-height: 1.4;
+}
+
+.contact p {
+  margin: 5px 0;
+}
+
+.banner-tagline {
+  text-align: center !important;
+  display: block;
+  width: 100%;
+  font-size: 18px;
+  color: #555;
+  margin: 10px 0 20px;
+}
+
+.construction-notice {
+  color: #fff9c4;
+  background-color: #333;
+  padding: 10px;
+  font-style: italic;
+  font-size: 1rem;
+}
+
+/* Image Styling */
+img {
+  display: block;
+  margin: 20px auto;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  border: 4px solid #004088;
+  max-width: 90%;
+  height: auto;
+  transition: all 0.3s ease-in-out;
+}
+
+img:hover {
+  border-color: #007bff;
+  transform: scale(1.05);
+}
+
+/* Home Photo Styling */
+.photo-container {
+  width: 250px;
+  height: 320px;
+  margin: 20px auto;
+  background-color: #f0f8ff;
+  padding: 10px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 4px solid #004080;
+  border-radius: 50%;
+  clip-path: ellipse(50% 45% at 50% 50%);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+.home-photo:hover {
+  transform: scale(1.03);
+  border-color: #007bff;
+}
+
+.home-name {
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 10px;
+  font-family: 'Lora', serif;
+  color: #002244;
+}
+
+/* Text & Lists */
+p, li, .intro, .construction, section {
+  text-align: justify !important;
+  hyphens: auto;
+  word-break: break-word;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5 {
+  text-align: left;
+  font-weight: 700;
+  color: #001933;
+  margin-top: 25px;
+}
+
+h4 {
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 6px;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin: 20px auto;
+  padding: 1rem 0;
+  font-size: 0.9rem;
+}
+
+footer p {
+  margin-top: 10px;
+  padding-top: 5px;
+}
+
+.footer-link {
+  margin: 0 10px;
+  color: #555;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: 'Lora', serif;
+  display: inline-block;
+  transition: color 0.3s ease-in-out;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+.footer-link i {
+  vertical-align: middle;
+}
+
+/* Flash Messages */
+.flash-messages ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+    width: 90%;
+  }
+
+  .home-photo {
+    width: 70%;
+    height: auto;
+    clip-path: ellipse(50% 50% at 50% 50%);
+  }
+}
+
+/* Collapsible Summary */
+details summary {
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 10px 0;
+  list-style: none;
+  padding: 4px 20px 4px 20px;
+  color: #001933;
+  position: relative;
+}
+
+details summary::before {
+  content: "▶";
+  position: absolute;
+  left: 0;
+  color: #003366;
+  font-size: 0.9rem;
+  transition: transform 0.2s ease-in-out;
+}
+
+details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+details[open] summary {
+  font-weight: 700;
+}
+
+details summary:focus {
+  outline: none;
+}
+
+/* Page-Specific */
+.references-page footer a {
+  display: none !important;
+}
+
+.error-page {
+  background-color: #fff8f8;
+  min-height: 100vh;
+}
+
+.error-page main {
+  padding-top: 80px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+section {
+  margin-bottom: 40px;
+}
+
+section h4 {
+  margin-bottom: 15px;
+}
+section {
+  margin-bottom: 40px;
+}
+
+section h4 {
+  margin-bottom: 15px;
+}

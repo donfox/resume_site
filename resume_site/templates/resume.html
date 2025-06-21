@@ -1,0 +1,319 @@
+
+{% extends "base.html" %}
+{% block title %}Resume{% endblock %}
+
+{% block head_extra %}
+  <meta name="description" content="Detailed resume of Don Fox including skills, 
+  professional experience, education, and contact information. Available in PDF or DOCX.">
+{% endblock %}
+
+{% from "components/job_entry.html" import job_entry %}
+{% from "components/education_entry.html" import education_entry %}
+{% from "components/request_form.html" import request_form %}
+
+{% block content %}
+  <h1 class="text-center">Resume</h1>
+  <p>Welcome! Below is the downloadable resume of Don Fox, featuring career highlights.</p>
+  <p>You can request a copy in your preferred format (PDF or DOCX) via the contact form.</p>
+
+  <header>
+    <h4 class="text-center">Don Fox</h4>
+    <p class="text-center">
+      <a href="mailto:donfox1@mac.com">donfox1@mac.com</a>
+    </p>
+  </header>
+
+  <main>
+  <section class="summary">
+    <h4>Summary</h4>
+     <p>
+     Experienced software engineer with a broad project history working across diverse domains,
+     such as telecommunications, warehousing, medical claims and healthcare IT ...etc.  My focus 
+     has been mostly on backend development but with occasional contributions to web development. 
+     Work has been extensively on Unix platforms using the GNU toolchain and mostly relational DBs.
+   </p>
+
+    <p>In addition to my technical work, I have had the opportunity to mentor interns and 
+      collaborate on complex projects, emphasizing thoughtful problem-solving and reliable system 
+      design. I am currently open to remote or freelance opportunities that align with my expertise 
+      and interests.</p>
+  </section>
+
+  <section class="education">
+    <h4>Education</h4>
+    {{ education_entry("Undergraduate", "Bachelor of Arts in Philosophy", 1982, 
+    "University of Tennessee, Knoxville") }}
+    {{ education_entry("Technical Training", "Associate of Science in Computer Science Technology, 
+     Cum Laude", 1991, "Pellissippi State Technical Community College, Knoxville") }}
+  </section>
+
+  <article class="professional-history">
+    <h4>Professional History</h4>
+    {{ job_entry(
+      "EMR Technical Solutions",
+      "Multiple Locations",
+      "2009–2024",
+      "https://emrts.us/",
+      "Freelance developer for a healthcare IT startup across five separate engagements, focused on 
+       open-source solutions for medical records, billing, provider enrollment, and claims. Projects
+       involved rapid prototyping and R&D with academic and professional collaborators.",
+
+      [
+        "August 2023–September 2024:Collaborated with interns on a Medicaid prediction research 
+        project, introducing foundational data science concepts and workflows. Subsequently led a 
+        follow-up initiative exploring cryptocurrency, which culminated in the development of a 
+        Bitcoin indexer prototype. While promising, the project was paused when the participating 
+        students returned to academic commitments.\n\n   Tools: macOS, Windows, EMRTS Linux network,
+         GitHub (version control)\n        Stack: Python 3.x, Flask, PostgreSQL",
+
+        "July 2015 - January 2017: Developed proof-of-concept tools and prototypes for processing 
+        medical transaction data (EDI_X12_837) and handling large medical provider datasets (JSON, 
+        XML). Extended a web services application for state governments and clinics to facilitate 
+        medical provider data registration and validation.\n        Tools: Python 3.5, PostgreSQL, 
+        Django, JavaScript | Platform: Unix",
+
+        "October 2013– March 2014: Worked on research-driven projects related to mobile medical 
+        screenings and provider enrollment for state governments. Contributed to developing a
+         Health Information Exchange (HIE) application for hospitals.\n MongoDB. 
+         Tools: Elixir/Phoenix | Platform: Ubuntu Linux, macOS | Databases: MariaDB, PostgreSQL,
+        MongoDB.",
+
+        "November 2011– MaRCH 2012: Focused on electronic medical records, claims processing, and 
+        provider enrollment applications on GNU/Linux. Developed tools for handling JSON data and 
+        extended the application’s support for additional records processing.\n   Tools: Python, 
+        Django, JavaScript (jQuery, Node.js) | Databases: MariaDB, PostgreSQL, Redis.",
+        
+        "July 2009– May 2010: Conducted code analysis for GNUmed (GNUmed Documentation), 
+        an open-source electronic medical record system, to evaluate its suitability for client 
+        needs. Built a RESTful web service for state medical provider validation.\n    
+        Tools: Python, Django | Platform: GNU/Linux."
+      ]
+    ) }}
+
+    {% set quantuvos_description %}
+      "This was a remote technical consulting position for Quantuvos, a start-up in coaching 
+      services, at the request of the CTO. My role involved reviewing and testing code for an MVP 
+      website used by coaches and clients to schedule workshops and sessions. I provided code 
+      reviews andrecommendations to enhance the site’s functionality.
+    {% endset %}
+
+    {{ job_entry(
+      "Quantuvos",
+      "Atlanta, GA (Remote)",
+      "Nov 2021 – Feb 2022",
+      None,
+      quantuvos_description,
+      ["Python 3.9", "Django 3.1", "PostgreSQL 14.1", "Docker", "Azure"]
+    ) }}
+
+    {% set orchid_description %}
+    A remote six-month contract position, later extended to year-end, focused on document processing
+    and archival. This project involved preparing documents (Word, Excel, and PDF) for submission to
+    <a href="https://www.etq.com" target="_blank">EtQ Reliance</a>. I handled programmatic 
+    modifications of Word documents, adding required tags and formats for archival purposes and 
+    manipulating spreadsheet metadata. Metadata was verified programmatically for accuracy and 
+    completeness before proceeding.
+    {% endset %}
+
+    {{ job_entry(
+      "Orchid Orthopedic Solutions",
+      "Mason, MI",
+      "Feb 2020 – Dec 2020",
+      "https://www.orchid-ortho.com",
+      orchid_description,
+      ["Python 3.8, C#", "Windows/macOS"]
+    ) }}
+
+    {{ job_entry(
+      "CSpire",
+      "Jackson, MS",
+      "July 2018 – Jan 2019",
+      "https://www.cspire.com",
+      "Led development on this project to create a RESTful auto-provisioning API for managing 
+      customer and vendor services data. This was for tracking, logging, and reporting on customer 
+      services provided by CSpire and third-party vendors. The application supported both the 
+      business office and the network system administrator. I was a contractor.",
+      ["Python 2.7, Flask, SQLAlchemy, MySQL, PostgreSQL"]
+    ) }}
+
+    {{ job_entry(
+      "Lowes Inc.",
+      "Mooresville, NC",
+      "Aug 2012 – Jun 2013",
+      "https://corporate.lowes.com",
+      "Worked on refactoring and extending legacy C code to support the transition to EMV credit 
+      and debit card  transactions. Tasks included code analysis, bug fixes, and 
+      documentation. This was a contractor role.",
+      ["C, AIX, DB2, Oracle"]
+    ) }}
+
+    {{ job_entry(
+      "Hilton",
+      "Memphis, TN",
+      "Apr 2012 – Aug 2012",
+      None,
+      "Provided <strong>production support</strong> for Hilton's Central Reservation System. 
+      Occasionally  contributed lightweight programming using C, Perl and Shell scripting.",
+      ["Solaris, GNU/Linux, Informix, MySQL"]
+    ) }}
+
+    {{ job_entry(
+      "Hewlett-Packard",
+      "Nashville, TN",
+      "May 2010 – Dec 2011",
+      None,
+      "I was employed to perform software maintenance and troubleshooting for TennCare 
+      (State of Tennessee). Key projects included:
+        <ul>
+          <li>Refactoring and extending a SOAP server (written in C) for enhanced data 
+              exchange within the <strong>Medicaid Management Information System (MMIS).</li>
+          <li>Developing monthly report generators for various medical claims using.</li>
+          <li>Porting the entire application codebase to a new 64-bit Solaris network, with updated 
+              compilers and Oracle database version.</li>
+          <li>Contributed to technical writing and documentation.</li>
+        </ul>",
+      ["C, PL/SQL, SOAP, Oracle, Solaris"]
+    ) }} 
+
+    {{ job_entry(
+      "ACS",
+      "Nashville, TN",
+      "Feb 2009 – Jun 2009",
+      None,
+      "Worked on migrating MMIS (Medicaid Management Information System) software for TennCare from 
+      Hewlett-Packard’s infrastructure to ACS. Developed automation scripts and analyzed legacy C 
+      modules.",
+      ["C, Python 3, Unix"]
+    ) }}
+
+    {{ job_entry(
+      "Nationwide",
+      "Columbus, OH",
+      "Oct 2008 – Feb 2009",
+      None,
+      "I Analyzed annuity and financial data daily to detect anomalies in high-volume datasets. 
+      I proposed and began a Python-based data validation and reporting tool to modernize and 
+      replace aging shell scripts used in production.",
+      ["Solaris, Oracle, proprietary scripting"]
+    ) }}
+
+    {{ job_entry(
+      "Lexmark",
+      "Lexington, KY",
+      "May 2007 – Oct 2008",
+      "https://www.lexmark.com/en_us.html",
+      "Contract role focused on bug fixes, code analysis, and C code refactoring for high-end 
+      prototype printers designed for secure environments (government, military, finance). 
+      Developed Python scripts for integration testing.",
+      ["C, Python 2.6, RHEL"]
+    ) }}
+
+    {{ job_entry(
+      "IBM Internet Security Systems",
+      "Atlanta, GA",
+      "Jan 2007 – May 2007",
+      None,
+      "A four-month contract focused on developing tools to facilitate the porting and rebuilding of
+      C/C++ applications originally developed in Microsoft Visual Studio for deployment in Unix 
+      environments. The approach emphasized leveraging residual artifacts generated by Visual Studio
+      , rather than relying on traditional makefile-based builds.",
+      ["C/C++, macOS, Ubuntu Linux, Windows XP"]
+    ) }}
+
+    {{ job_entry(
+      "Lowe's Inc.",
+      "Wilkesboro, NC",
+      "Feb 2006 – Dec 2006",
+      None,
+      "The project involved internationalization of software to be used at Lowe's first Canadian store. 
+      It involved maintenance and extension of existing C and shell scripting. All development was 
+      on AIX.",
+      ["C, AIX, Oracle, DB2"]
+    ) }} 
+
+    {{ job_entry(
+      "Cingular Wireless",
+      "Alpharetta, GA",
+      "Aug 2004 – Feb 2006",
+      None,
+      "This involved code extension and maintenance for a legacy billing engine running on AIX and
+      GNU/Linux using ORACLE It was written primarily in C+ with occasional use of shell scripts.
+      I taught a basic course in C++ to the group responsible for code acceptance testing, and 
+      wrote an application for them, in Perl, that automated the configuration of test boxes.",
+      ["C, C++, Perl, Oracle, AIX"]
+    ) }}
+
+    {{ job_entry(
+      "SAIC",
+      "Oak Ridge, TN",
+      "Feb 2003 – Aug 2004",
+      "https://saic.com",
+      "I maintained and expanded the functionality of a legacy Perl application used for network wide
+      resource and account maintenance at the Oak Ridge and Los Alamos National Labs until it was 
+      replaced. ",
+      ["Perl, C, Oracle, Unix"]
+    ) }}
+
+    {{ job_entry(
+      "University of Tennessee – Center for Environmental Biotechnology",
+      "Knoxville, TN",
+      "Aug 2002 – Oct 2003",
+      "https://ceb.utk.edu/",
+      "I created some bioinformatics tools for monitoring micro-array gene expression data. 
+      I Built bioinformatics tools for monitoring, reporting and analysis of micro-array gene
+      data. Also, did some tutoring of professional staff and graduate students in Perl 
+      programming for them to use in their research.",
+      ["Perl, C, MySQL, Red Hat Linux"]
+    ) }}
+
+    {{ job_entry(
+      "Manhattan Associates",
+      "Atlanta, GA",
+      "Jul 2001 – Jul 2002",
+      None,
+      "This was code maintenance on a cross-platform warehouse management application written in
+       C++ for Linux and Windows with Linux being primary.",
+      ["C++, Oracle, Linux, Windows, MKS Toolkit, Microsoft Advanced Windows Server OS"]
+    ) }}
+
+    {{ job_entry(
+      "LHS/Sema Group Telecom",
+      "Atlanta, GA",
+      "Jan 2000 – Jul 2001",
+      None,
+      "Worked on code maintenance and enhancement, spanning multiple Unix platforms, for a large
+      legacy-billing engine written in C/C++ using ORACLE. There were also major technical 
+      documentation rewrites that I worked on.",
+      ["C, C++, Oracle, Unix"]
+    ) }}
+
+    {{ job_entry(
+      "Intellivoice / Premier Technologies",
+      "Atlanta, GA",
+      "Nov 1998 – Jan 2000",
+      None,
+      "Intellivoice specialized in multi-media integration R&D for distributed Solaris networks. I
+      worked on coding projects using mostly C++ and evaluated third-party middleware (such as CORBA) 
+      to facilitate communication over such networks.",
+      ["C++, CORBA, Solaris"]
+    ) }}
+
+    {{ job_entry(
+      "MCI/WorldCom",
+      "Atlanta, GA",
+      "Feb 1996 – Nov 1998",
+      None,
+      "This full cycle project to implement a billing engine. Development was on AIX in C++, 
+      Pro*C and ORACLE. . I also wrote a Perl application, a one-man project, that processed 
+      firearm purchase applications for the State of California (an MCI client). ",
+      ["C++, SQL, Unix, Perl"]
+    ) }}
+  </article>
+
+  <section class="request-resume mt-4">
+    <h4 class="text-center">Request a Copy of My Resume</h4>
+    {{ request_form() }}
+  </section>
+</main>
+
+{% endblock %}

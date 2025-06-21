@@ -1,0 +1,43 @@
+
+{% macro request_form(action="/resume") %}
+<form method="POST" action="{{ action }}" class="needs-validation" novalidate>
+  <!-- Name -->
+  <div class="row mb-3">
+    <label class="col-sm-3 col-form-label" for="name">Your Full Name</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+  </div>
+
+  <!-- Email -->
+  <div class="row mb-3">
+    <label class="col-sm-3 col-form-label" for="email">Email Address</label>
+    <div class="col-sm-9">
+      <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+  </div>
+
+  <!-- Format Radios -->
+  <div class="row mb-3">
+    <label class="col-sm-3 col-form-label">Resume Format</label>
+    <div class="col-sm-9">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="format" value="pdf" checked>
+        <label class="form-check-label">PDF</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="format" value="word">
+        <label class="form-check-label">Word</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-9">
+      <button type="submit" class="btn btn-primary">Request Resume</button>
+    </div>
+  </div>
+</form>
+{% endmacro %}

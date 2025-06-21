@@ -1,0 +1,31 @@
+{% macro job_entry(employer, location, dates, url, description, bullets) %}
+<article class="job-entry">
+  <details>
+    <summary>
+      <strong>{{ employer }}</strong>
+      {% if location %} — {{ location }}{% endif %}
+      {% if dates %} — {{ dates }}{% endif %}
+    </summary>
+    {% if url %}
+      <p><a href="{{ url }}" target="_blank">{{ url|replace("https://", "") }}</a></p>
+    {% endif %}
+    <p>{{ description | safe }}</p>
+    {% if bullets %}
+      <!-- <ul>
+        {% for item in bullets %}
+          <li>{{ item | safe }}</li>
+        {% endfor %}
+      </ul> -->
+    <ul>
+      {% for item in bullets %}
+        {% if loop.last %}
+          <li>[<strong>{{ item }}</strong>]</li>
+        {% else %}
+          <li>{{ item | safe }}</li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </details>
+</article>
+{% endmacro %}
