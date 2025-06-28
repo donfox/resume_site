@@ -1,45 +1,54 @@
-# Bytecode
+# Python bytecode
 *.py[cod]
 __pycache__/
 
-# Mac system files
+# System files
 .DS_Store
 
-# Environment / config
+# Environment variables / secrets
 .env
 *.env*
 .env.*
 
-# Editor/IDE folders
+# IDE/editor settings
 .vscode/
 .idea/
+*.sublime-workspace
 *.swp
 
-# SQLite / test DBs
+# Databases
 *.sqlite3
 *.db
 
-# Flask instance folder
+# Flask runtime
 instance/
 
 # Logs
 logs/
 *.log
 
-# Compiled files
+# Packaging/build artifacts
 *.egg-info/
 dist/
 build/
 
-# Unit test cache
+# Test and coverage
 .pytest_cache/
 .coverage
 htmlcov/
 
-# Temporary / local files
+# Backups & temp
 *.bak
 *.tmp
 *~
 
-# Optional: Ignore uploaded/static assets
-# /static/files/.DS_Store
+# Node / JS tooling (if relevant)
+node_modules/
+npm-debug.log
+
+# Exclude Subl Text related project files.
+*.sublime-*
+
+# Static asset clutter (optional)
+# static/files/
+# static/images/
