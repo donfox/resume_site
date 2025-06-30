@@ -38,6 +38,8 @@ def validate_email(email):
     return re.match(EMAIL_REGEX, email) is not None
 
 
+import traceback
+
 def send_email(mail, app, recipient, subject, body, attachment_path=None):
     """Send an email with optional attachment."""
     import smtplib
@@ -70,11 +72,26 @@ def send_email(mail, app, recipient, subject, body, attachment_path=None):
         return True, "Resume has been sent to your email!"
 
     except Exception as e:
-        app.logger.error(f"Failed to send email to {recipient}: {e}")
-        app.logger.error("".join(traceback.format_exc()))
-        return False, "Error sending email. Please try again later."
-        
+        # Log error and try raw SMTP fallback
+        tb = traceback.format_exc()
+        print(f"[FLASK-MAIL ERROR] Failed to send with Flask-Mail:\n{tb}")
+        app.logger.error(f"[FLASK-MAIL ERROR] {e}")
 
+        try:
+            app.logger.info("Attempting raw SMTP fallback...")
+            server = smtplib.SMTP(app.config["MAIL_SERVER"], app.config["MAIL_PORT"])
+            server.starttls()
+            server.login(app.config["MAIL_USERNAME"], app.config["MAIL_PASSWORD"])
+            server.sendmail(app.config["MAIL_USERNAME"], [recipient], body)
+            server.quit()
+            app.logger.info("Raw SMTP email sent successfully.")
+            return True, "Raw SMTP: Resume sent via direct SMTP."
+        except Exception as smtp_e:
+            tb = traceback.format_exc()
+            print(f"[RAW SMTP ERROR] Could not send mail:\n{tb}")
+            app.logger.error(f"[RAW SMTP ERROR] Could not send mail: {smtp_e}")
+            return False, "Error sending email (raw SMTP). Please try again later."
+            
 # def send_email(mail, app, recipient, subject, body, attachment_path=None):
 #     """Send an email with optional attachment."""
 #     try:
