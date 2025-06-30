@@ -40,13 +40,15 @@ def validate_email(email):
 
 def send_email(mail, app, recipient, subject, body, attachment_path=None):
     """Send an email with optional attachment."""
-    try:
-        import smtplib
-        smtplib.SMTP.debuglevel = 0  # Optional: set to 1 for verbose SMTP output
+    import smtplib
+    import traceback
+    smtplib.SMTP.debuglevel = 0
 
+    try:
+        app.logger.info(f"Preparing to send email to {recipient}")
         msg = Message(
             subject,
-            sender=app.config.get("MAIL_USERNAME", "unknown@domain.com"),
+            sender=app.config["MAIL_USERNAME"],
             recipients=[recipient]
         )
         msg.body = body
@@ -60,28 +62,16 @@ def send_email(mail, app, recipient, subject, body, attachment_path=None):
                 with app.open_resource(attachment_path) as f:
                     filename = os.path.basename(attachment_path)
                     msg.attach(filename, "application/octet-stream", f.read())
+                app.logger.info(f"Attachment {filename} successfully attached.")
 
-        # Log intent before attempting to send
-        app.logger.info(f"Attempting to send email to {recipient} via {app.config.get('MAIL_SERVER')}")
-
-        # 🔇 Fully suppress stdout/stderr during mail.send()
-        stdout_backup = sys.stdout
-        stderr_backup = sys.stderr
-        sys.stdout = io.StringIO()
-        sys.stderr = io.StringIO()
-        try:
-            mail.send(msg)
-        except Exception as send_error:
-            app.logger.error(f"Exception during mail.send(): {send_error}")
-            raise  # Re-raise to be caught by outer try
-        finally:
-            sys.stdout = stdout_backup
-            sys.stderr = stderr_backup
-
-        app.logger.info(f"Email sent successfully to {recipient}")
+        app.logger.info("Calling mail.send now...")
+        mail.send(msg)
+        app.logger.info(f"Email sent to {recipient}")
         return True, "Resume has been sent to your email!"
+
     except Exception as e:
         app.logger.error(f"Failed to send email to {recipient}: {e}")
+        app.logger.error("".join(traceback.format_exc()))
         return False, "Error sending email. Please try again later."
         
 
