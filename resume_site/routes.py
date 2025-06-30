@@ -36,13 +36,13 @@ def resume():
         resume_format = request.form.get("format", "pdf")
         ip_address = request.remote_addr
 
-        logger.info(
+        current_app.logger.info(
             f"Received resume request from {user_name} ({user_email}) at {ip_address}"
         )
 
         if not user_email or not validate_email(user_email):
             flash("Please provide a valid email address.", "danger")
-            logger.warning(f"Invalid email address provided: {user_email}")
+            current_app.logger.warning(f"Invalid email address provided: {user_email}")
             return redirect(url_for("main.resume"))
 
         try:
@@ -59,11 +59,11 @@ def resume():
                 )
                 db.session.add(new_request)
                 db.session.commit()
-                logger.info(f"New resume request recorded: {user_name}, {user_email}")
+                current_app.logger.info(f"New resume request recorded: {user_name}, {user_email}")
 
         except Exception as e:
             db.session.rollback()
-            logger.error(f"Database error while saving resume request: {e}")
+            current_app.logger.error(f"Database error while saving resume request: {e}")
             flash("An error occurred. Please try again.", "danger")
             return redirect(url_for("main.resume"))
 
@@ -103,7 +103,7 @@ def email_requests():
         requests = EmailRequest.query.all()
         return render_template("email_requests.html", email_requests=requests)
     except Exception as e:
-        logger.error(f"Failed to retrieve email requests: {e}")
+        current_app.logger.error(f"Failed to retrieve email requests: {e}")
         flash("An error occurred while retrieving data.", "danger")
         return redirect(url_for("main.index"))
 

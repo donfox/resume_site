@@ -7,7 +7,7 @@ import io
 import logging
 from flask_mail import Message
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 # Regular expression for validating email addresses
 EMAIL_REGEX = re.compile(r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$")
@@ -21,16 +21,16 @@ def validate_config(app):
     missing_keys = [key for key in required_keys if not app.config.get(key)]
 
     if missing_keys:
-        logger.warning(f"Missing mail configuration keys: {', '.join(missing_keys)}")
+        app.logger.warning(f"Missing mail configuration keys: {', '.join(missing_keys)}")
     else:
-        logger.info("All required mail configuration keys are present.")
+        app.logger.info("All required mail configuration keys are present.")
 
 
 # Log warning if required file does not exist
 def ensure_file_exists(file_path):
     """Log a warning if a required file is missing."""
     if not os.path.isfile(file_path):
-        logger.warning(f"File not found: {file_path}")
+        app.logger.warning(f"File not found: {file_path}")
 
 
 def validate_email(email):
@@ -72,9 +72,9 @@ def send_email(mail, app, recipient, subject, body, attachment_path=None):
             sys.stdout = stdout_backup
             sys.stderr = stderr_backup
 
-        logger.info(f"Email sent to {recipient}")
+        app.logger.info(f"Email sent to {recipient}")
         return True, "Resume has been sent to your email!"
     except Exception as e:
-        logger.error(f"Failed to send email to {recipient}: {e}")
+        app.logger.error(f"Failed to send email to {recipient}: {e}")
         return False, "Error sending email. Please try again later."
         
