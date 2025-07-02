@@ -78,6 +78,13 @@ def resume():
 
         mail = current_app.extensions.get("mail")
 
+        if not mail:
+            current_app.logger.error("Mail extension not initialized!")
+        else:
+            current_app.logger.warning("Mail extension loaded successfully")        
+
+        current_app.logger.warning("About to call send_email")
+
         success, message = send_email(
             mail, current_app, user_email, subject, body, attachment_path
         )

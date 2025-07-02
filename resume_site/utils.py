@@ -5,6 +5,8 @@ import os
 import sys
 import io
 import logging
+logger = logging.getLogger('email')
+import traceback
 from flask_mail import Message
 
 # logger = logging.getLogger(__name__)
@@ -38,8 +40,6 @@ def validate_email(email):
     return re.match(EMAIL_REGEX, email) is not None
 
 
-import traceback
-
 def send_email(mail, app, recipient, subject, body, attachment_path=None):
     """Send an email with optional attachment."""
     import smtplib
@@ -48,6 +48,8 @@ def send_email(mail, app, recipient, subject, body, attachment_path=None):
 
     try:
         app.logger.info(f"Preparing to send email to {recipient}")
+        logger.warning("Entered send_email")
+        
         msg = Message(
             subject,
             sender=app.config["MAIL_USERNAME"],
@@ -68,14 +70,19 @@ def send_email(mail, app, recipient, subject, body, attachment_path=None):
 
         app.logger.info("Calling mail.send now...")
         mail.send(msg)
+
+        logger.warning("Email sent successfully.")
+
         app.logger.info(f"Email sent to {recipient}")
         return True, "Resume has been sent to your email!"
 
     except Exception as e:
         # Log error and try raw SMTP fallback
+        logger.error(f"Failed to send email: {e}")
         tb = traceback.format_exc()
         print(f"[FLASK-MAIL ERROR] Failed to send with Flask-Mail:\n{tb}")
-        app.logger.error(f"[FLASK-MAIL ERROR] {e}")
+        # app.logger.error(f"[FLASK-MAIL ERROR] {e}")
+        app.logger.error(f"[FLASK-MAIL ERROR] {e}\n{tb}")
 
         try:
             app.logger.info("Attempting raw SMTP fallback...")
@@ -91,7 +98,7 @@ def send_email(mail, app, recipient, subject, body, attachment_path=None):
             print(f"[RAW SMTP ERROR] Could not send mail:\n{tb}")
             app.logger.error(f"[RAW SMTP ERROR] Could not send mail: {smtp_e}")
             return False, "Error sending email (raw SMTP). Please try again later."
-            
+
 # def send_email(mail, app, recipient, subject, body, attachment_path=None):
 #     """Send an email with optional attachment."""
 #     try:

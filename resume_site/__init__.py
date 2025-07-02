@@ -69,6 +69,9 @@ def create_app():
     mail.init_app(app)
     app.register_blueprint(main_bp)
 
+    from .utils import validate_config
+    validate_config(app)
+
     if app.config["ENV"] == "development":
         with app.app_context():
             db.create_all()
