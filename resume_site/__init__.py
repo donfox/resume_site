@@ -26,30 +26,51 @@ def create_app():
     if not os.path.exists(app.config["LOG_DIR"]):
         os.makedirs(app.config["LOG_DIR"])
 
-    try:
-        file_handler = RotatingFileHandler(
-            app.config["LOG_FILE"],
-            maxBytes=app.config["MAX_LOG_SIZE"],
-            backupCount=app.config["BACKUP_COUNT"],
-        )
-        file_handler.setFormatter(
-            logging.Formatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s")
-        )
-        file_handler.setLevel(app.config.get("LOG_LEVEL", logging.INFO))
 
-        app.logger.addHandler(file_handler)
-        app.logger.setLevel(logging.INFO)
+    # Logging setup: file + console (Render-friendly)
+    file_handler = RotatingFileHandler(
+        app.config["LOG_FILE"],
+        maxBytes=app.config["MAX_LOG_SIZE"],
+        backupCount=app.config["BACKUP_COUNT"],
+    )
+    file_handler.setFormatter(logging.Formatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s"))
+    file_handler.setLevel(app.config.get("LOG_LEVEL", logging.INFO))
 
-        # Suppress propagation to root logger to avoid duplicated output
-        app.logger.propagate = False
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(logging.Formatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s"))
+    stream_handler.setLevel(logging.INFO)
 
-    except Exception as e:
-        print(f"⚠️ Logging setup failed: {e}")
-        stream_handler = logging.StreamHandler()
-        stream_handler.setLevel(logging.INFO)
-        app.logger.addHandler(stream_handler)
-        app.logger.setLevel(logging.INFO)
-        app.logger.warning("Fallback to console logging.")
+    app.logger.addHandler(file_handler)
+    app.logger.addHandler(stream_handler)
+    app.logger.setLevel(logging.INFO)
+    app.logger.propagate = False
+
+    app.logger.info("Logging is successfully configured.")
+
+    # try:
+    #     file_handler = RotatingFileHandler(
+    #         app.config["LOG_FILE"],
+    #         maxBytes=app.config["MAX_LOG_SIZE"],
+    #         backupCount=app.config["BACKUP_COUNT"],
+    #     )
+    #     file_handler.setFormatter(
+    #         logging.Formatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s")
+    #     )
+    #     file_handler.setLevel(app.config.get("LOG_LEVEL", logging.INFO))
+
+    #     app.logger.addHandler(file_handler)
+    #     app.logger.setLevel(logging.INFO)
+
+    #     # Suppress propagation to root logger to avoid duplicated output
+    #     app.logger.propagate = False
+
+    # except Exception as e:
+    #     print(f"⚠️ Logging setup failed: {e}")
+    #     stream_handler = logging.StreamHandler()
+    #     stream_handler.setLevel(logging.INFO)
+    #     app.logger.addHandler(stream_handler)
+    #     app.logger.setLevel(logging.INFO)
+    #     app.logger.warning("Fallback to console logging.")
 
     app.logger.info(" Flask app initialized")
 
