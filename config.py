@@ -23,7 +23,7 @@ class Config:
     SQLALCHEMY_DATABASE_URI = (
         f"sqlite:///{os.path.join(basedir, 'instance', 'site.db')}"
     )
-    # SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
+    # SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or "sqlite:///site.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     MAIL_SERVER = os.getenv("MAIL_SERVER")
@@ -32,6 +32,7 @@ class Config:
     MAIL_USE_SSL = str_to_bool(os.getenv("MAIL_USE_SSL", "False"))
     MAIL_USERNAME = os.getenv("MAIL_USERNAME")
     MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
+    MAIL_DEFAULT_SENDER = os.getenv("MAIL_DEFAULT_SENDER")
     ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", None)
 
     SESSION_COOKIE_HTTPONLY = True

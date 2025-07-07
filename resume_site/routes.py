@@ -46,7 +46,6 @@ def resume():
             return redirect(url_for("main.resume"))
 
         try:
-            print(">>> DB check starting")
             db.session.execute(text("SELECT 1"))
             existing_request = EmailRequest.query.filter_by(email=user_email).first()
 
@@ -63,7 +62,6 @@ def resume():
                 current_app.logger.info(f"New resume request recorded: {user_name}, {user_email}")
 
         except Exception as e:
-            print(">>> DB exception occurred:", e)
             db.session.rollback()
             current_app.logger.error(f"Database error while saving resume request: {e}")
             flash("An error occurred. Please try again.", "danger")
@@ -84,8 +82,6 @@ def resume():
             current_app.logger.error("Mail extension not initialized!")
         else:
             current_app.logger.warning("Mail extension loaded successfully")        
-
-        current_app.logger.warning("About to call send_email")
 
         success, message = send_email(
             mail, current_app, user_email, subject, body, attachment_path
