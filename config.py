@@ -41,7 +41,9 @@ class Config:
 
     # Log settings
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    STATIC_FOLDER = os.path.join(BASE_DIR, "static")
+    
+    STATIC_FOLDER = os.path.join(basedir, "static")
+
     LOG_DIR = os.path.join(BASE_DIR, "logs")
     LOG_FILE = os.path.join(LOG_DIR, "app.log")
     MAX_LOG_SIZE = 100000  # 100 KB
