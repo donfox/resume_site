@@ -1,4 +1,4 @@
 
-web: gunicorn 'resume_site:create_app()'
+web: gunicorn wsgi:app
 
 
