@@ -18,10 +18,11 @@ class Config:
     ENV = os.getenv("FLASK_ENV", "production")
     DEBUG = ENV == "development"
 
-    # SECRET_KEY = os.environ.get("SECRET_KEY")
     SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
 
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL") or f"sqlite:///{os.path.join(basedir, 'instance', 'site.db')}"
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
+    if not SQLALCHEMY_DATABASE_URI:
+        raise RuntimeError("❌ DATABASE_URL is not set in the environment.")
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -37,13 +38,10 @@ class Config:
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SECURE = False
     SESSION_COOKIE_SAMESITE = "Lax"
-
-    # Log settings
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     
     STATIC_FOLDER = os.path.join(basedir, "static")
 
-    LOG_DIR = os.path.join(BASE_DIR, "logs")
+    LOG_DIR = os.path.join(basedir, "logs")
     LOG_FILE = os.path.join(LOG_DIR, "app.log")
     MAX_LOG_SIZE = 100000  # 100 KB
     BACKUP_COUNT = 1
