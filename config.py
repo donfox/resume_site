@@ -1,15 +1,14 @@
 # config.py
 
 import os
-import logging
+from dotenv import load_dotenv
+from pathlib import Path
 
 basedir = os.path.abspath(os.getcwd())
-from logging.handlers import RotatingFileHandler
-
-from dotenv import load_dotenv
-
 load_dotenv(override=True)
 
+import logging
+from logging.handlers import RotatingFileHandler
 
 def str_to_bool(value):
     return value.lower() in ("true", "1", "t", "y", "yes")
@@ -19,11 +18,17 @@ class Config:
     ENV = os.getenv("FLASK_ENV", "production")
     DEBUG = ENV == "development"
 
-    SECRET_KEY = os.environ.get("SECRET_KEY")
-    SQLALCHEMY_DATABASE_URI = (
-        f"sqlite:///{os.path.join(basedir, 'instance', 'site.db')}"
-    )
-    # SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or "sqlite:///site.db"
+    # SECRET_KEY = os.environ.get("SECRET_KEY")
+    SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
+
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL") or f"sqlite:///{os.path.join(basedir, 'instance', 'site.db')}"
+
+    # Use PostgreSQL if DATABASE_URL is set (Railway), otherwise fallback to local SQLite
+#    SQLALCHEMY_DATABASE_URI = (
+#        os.environ.get("DATABASE_URL")
+#        or f"sqlite:///{os.path.join(basedir, 'instance', 'site.db')}"
+#    )
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     MAIL_SERVER = os.getenv("MAIL_SERVER")

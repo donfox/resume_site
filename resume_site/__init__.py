@@ -7,6 +7,7 @@ from config import Config
 
 from .routes import main_bp
 from .extensions import db, mail
+from .models import db, EmailRequest, UserMessage
 
 from dotenv import load_dotenv
 import smtplib
@@ -67,8 +68,15 @@ def create_app():
     from .utils import validate_config
     validate_config(app)
 
-    if app.config["ENV"] == "development":
-        with app.app_context():
+    with app.app_context():
+        try:
             db.create_all()
+            app.logger.info("✅ Database tables created or verified.")
+        except Exception as e:
+            app.logger.error(f"❌ Failed to create database tables: {e}")
+
+    # if app.config["ENV"] == "development":
+    #     with app.app_context():
+    #         db.create_all()
 
     return app
