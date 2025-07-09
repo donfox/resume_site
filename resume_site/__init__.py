@@ -1,6 +1,7 @@
 import os
 import logging
 from logging.handlers import RotatingFileHandler
+import os
 
 from flask import Flask
 from config import Config
@@ -27,7 +28,6 @@ def create_app():
     if not os.path.exists(app.config["LOG_DIR"]):
         os.makedirs(app.config["LOG_DIR"])
 
-
     # Logging setup: file + console (Render-friendly)
     file_handler = RotatingFileHandler(
         app.config["LOG_FILE"],
@@ -45,6 +45,9 @@ def create_app():
     app.logger.addHandler(stream_handler)
     app.logger.setLevel(logging.INFO)
     app.logger.propagate = False
+
+    app.logger.info(f"DATABASE_URL env: {os.getenv('DATABASE_URL')}")
+
 
     app.logger.info("Logging is successfully configured.")
     app.logger.info(" Flask app initialized")
@@ -69,14 +72,12 @@ def create_app():
     validate_config(app)
 
     with app.app_context():
+        app.logger.info(f"DATABASE_URL at startup: {app.config.get('SQLALCHEMY_DATABASE_URI')}")
         try:
             db.create_all()
             app.logger.info("✅ Database tables created or verified.")
         except Exception as e:
             app.logger.error(f"❌ Failed to create database tables: {e}")
 
-    # if app.config["ENV"] == "development":
-    #     with app.app_context():
-    #         db.create_all()
-
     return app
+

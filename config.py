@@ -23,12 +23,6 @@ class Config:
 
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL") or f"sqlite:///{os.path.join(basedir, 'instance', 'site.db')}"
 
-    # Use PostgreSQL if DATABASE_URL is set (Railway), otherwise fallback to local SQLite
-#    SQLALCHEMY_DATABASE_URI = (
-#        os.environ.get("DATABASE_URL")
-#        or f"sqlite:///{os.path.join(basedir, 'instance', 'site.db')}"
-#    )
-
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     MAIL_SERVER = os.getenv("MAIL_SERVER")
