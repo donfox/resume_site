@@ -49,11 +49,11 @@ def send_email(mail, app, recipient, subject, body, attachment_path=None):
         app.logger.info(f"Preparing to send email to {recipient}")
 
         msg = Message(
-            subject,
+            subject=subject,
             sender=app.config.get("MAIL_DEFAULT_SENDER", app.config.get("MAIL_USERNAME")),
-            recipients=[recipient]
+            recipients=[recipient],
+            body=body
         )
-        msg.body = body
 
         if attachment_path:
             if not os.path.exists(attachment_path):
@@ -64,17 +64,16 @@ def send_email(mail, app, recipient, subject, body, attachment_path=None):
                 with app.open_resource(attachment_path) as f:
                     filename = os.path.basename(attachment_path)
                     msg.attach(filename, "application/octet-stream", f.read())
-                app.logger.info(f"Attachment {filename} successfully attached.")
+                app.logger.info(f"Attachment added: {filename}")
 
-        app.logger.info("Calling mail.send now...")
-        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
-            mail.send(msg)
+        app.logger.info(f"Sending email to: {recipient} with subject: {subject}")
+        mail.send(msg)
+        app.logger.info(f"✅ Email successfully sent to {recipient}")
 
-        app.logger.info(f"Email sent to {recipient}")
         return True, "Resume has been sent to your email!"
 
     except Exception as e:
-        app.logger.error(f"Failed to send email: {e}")
         tb = traceback.format_exc()
+        app.logger.error(f"❌ Failed to send email to {recipient}")
         app.logger.error(f"[FLASK-MAIL ERROR] {e}\n{tb}")
         return False, "Error sending email. Please try again later."

@@ -40,6 +40,7 @@ class Config:
     SQLALCHEMY_DATABASE_URI = DATABASE_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    MAIL_DEBUG = 0
     MAIL_SERVER = os.getenv("BREVO_MAIL_SERVER") or os.getenv("MAIL_SERVER")
     MAIL_USERNAME = os.getenv("BREVO_MAIL_USERNAME") or os.getenv("MAIL_USERNAME")
     MAIL_PASSWORD = os.getenv("BREVO_MAIL_PASSWORD") or os.getenv("MAIL_PASSWORD")
@@ -60,29 +61,3 @@ class Config:
     LOG_FILE = os.path.join(LOG_DIR, "app.log")
     MAX_LOG_SIZE = 100000  # 100 KB
     BACKUP_COUNT = 1
-
-    @staticmethod
-    def setup_logging():
-        if not os.path.exists(Config.LOG_DIR):
-            os.makedirs(Config.LOG_DIR)
-
-        logger = logging.getLogger(__name__)
-        logger.setLevel(logging.INFO)
-
-        logging.basicConfig(
-            level=logging.INFO,
-            format=Config.LOG_FORMAT,
-            handlers=[
-                RotatingFileHandler(
-                    Config.LOG_FILE,
-                    maxBytes=Config.MAX_LOG_SIZE,
-                    backupCount=Config.BACKUP_COUNT,
-                ),
-                logging.StreamHandler(),
-            ],
-        )
-
-        logger.info("Logging is successfully configured.")
-
-# Call setup_logging() at the start of application.
-Config.setup_logging()
