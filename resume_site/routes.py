@@ -3,6 +3,10 @@
 import os
 import logging
 
+from flask import current_app
+from .utils import send_email
+from .extensions import mail
+
 from flask import (
     Blueprint,
     render_template,
@@ -81,7 +85,7 @@ def resume():
         if not mail:
             current_app.logger.error("Mail extension not initialized!")
         else:
-            current_app.logger.warning("Mail extension loaded successfully")        
+            current_app.logger.info("Mail extension loaded successfully")        
 
         success, message = send_email(
             mail, current_app, user_email, subject, body, attachment_path
@@ -111,6 +115,22 @@ def email_requests():
         current_app.logger.error(f"Failed to retrieve email requests: {e}")
         flash("An error occurred while retrieving data.", "danger")
         return redirect(url_for("main.index"))
+
+
+@main_bp.route("/test-mail")
+def test_mail():
+    mail = current_app.extensions.get("mail")
+    from .utils import send_email
+    success, message = send_email(
+        mail=mail,
+        app=current_app,
+        recipient="donfox1@mac.com",
+        subject="Test Email",
+        body="This is a test email sent from production.",
+    )
+    
+    current_app.logger.info(f"Test mail status: {success} — {message}")
+    return message, 200 if success else 500
 
 
 @main_bp.route("/test")

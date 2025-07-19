@@ -49,11 +49,16 @@ def send_email(mail, app, recipient, subject, body, attachment_path=None):
         app.logger.info(f"Preparing to send email to {recipient}")
 
         msg = Message(
-            subject=subject,
-            sender=app.config.get("MAIL_DEFAULT_SENDER", app.config.get("MAIL_USERNAME")),
+            subject=subject.strip(),
+            sender=(app.config.get("MAIL_DEFAULT_SENDER") or app.config.get("MAIL_USERNAME") or "").strip(),
             recipients=[recipient],
             body=body
         )
+
+        # ✅ Bonus: log the sanitized headers
+        app.logger.info(f"Sanitized sender: {msg.sender}")
+        app.logger.info(f"Sanitized recipient(s): {msg.recipients}")
+        app.logger.info(f"Sanitized subject: {msg.subject}")
 
         if attachment_path:
             if not os.path.exists(attachment_path):
