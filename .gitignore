@@ -52,3 +52,6 @@ npm-debug.log
 # Static asset clutter (optional)
 # static/files/
 # static/images/
+
+# Git metadata (don't archive)
+.git/

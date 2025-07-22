@@ -2,7 +2,8 @@
 
 import os
 import logging
-
+from flask import Response
+from functools import wraps
 from flask import current_app
 from .utils import send_email
 from .extensions import mail
@@ -23,7 +24,6 @@ from .utils import send_email, validate_email
 
 logger = logging.getLogger(__name__)
 main_bp = Blueprint("main", __name__)
-
 
 # Home page route
 @main_bp.route("/")
@@ -81,7 +81,6 @@ def resume():
         attachment_path = os.path.join(current_app.static_folder, "files", filename)
 
         mail = current_app.extensions.get("mail")
-
         if not mail:
             current_app.logger.error("Mail extension not initialized!")
         else:
@@ -106,7 +105,23 @@ def references():
     return render_template("references.html")
 
 
+def check_auth(password):
+    return password == os.getenv("ADMIN_PASSWORD")
+
+    
+def authenticate():
+    return Response("Unauthorized", 401, {"WWW-Authenticate": 'Basic realm="Login Required"'})
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if request.args.get("password") != os.getenv("ADMIN_PASSWORD"):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
+
 @main_bp.route("/secret-email-view-98347")
+@requires_auth
 def email_requests():
     try:
         requests = EmailRequest.query.all()
