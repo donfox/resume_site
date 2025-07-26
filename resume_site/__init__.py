@@ -5,6 +5,7 @@ import os
 
 from flask import Flask
 from config import Config
+from flask import render_template
 
 from .routes import main_bp
 from .extensions import db, mail

@@ -5,7 +5,6 @@ import logging
 from flask import Response
 from functools import wraps
 from flask import current_app
-from .utils import send_email
 from .extensions import mail
 
 from flask import (
@@ -87,10 +86,12 @@ def resume():
             current_app.logger.info("Mail extension loaded successfully")        
 
         success, message = send_email(
-            mail, current_app, user_email, subject, body, attachment_path
+            mail,
+            user_email,
+            subject,
+            body,
+            attachment_path
         )
-        flash(message, "success" if success else "danger")
-        return redirect(url_for("main.resume"))
 
     return render_template("resume.html")
 
@@ -131,21 +132,39 @@ def email_requests():
         flash("An error occurred while retrieving data.", "danger")
         return redirect(url_for("main.index"))
 
-
 @main_bp.route("/test-mail")
 def test_mail():
-    mail = current_app.extensions.get("mail")
-    from .utils import send_email
+    """A debug route to test email sending."""
+    subject = "Test Email"
+    body = "This is a test email from the resume site."
+    recipient = "donfox1@mac.com"
+    attachment = None  # or provide a path to a test file
+
     success, message = send_email(
-        mail=mail,
-        app=current_app,
-        recipient="donfox1@mac.com",
-        subject="Test Email",
-        body="This is a test email sent from production.",
+        mail,
+        sender=recipient,
+        recipients=[recipient],
+        subject=subject,
+        body=body,
+        attachment_path=attachment
     )
+
+    return message if success else f"❌ {message}", 200 if success else 500
+
+
+# @main_bp.route("/test-mail")
+# def test_mail():
+#     mail = current_app.extensions.get("mail")
+#     success, message = send_email(
+#         mail=mail,
+#         app=current_app,
+#         recipient="donfox1@mac.com",
+#         subject="Test Email",
+#         body="This is a test email sent from production.",
+#     )
     
-    current_app.logger.info(f"Test mail status: {success} — {message}")
-    return message, 200 if success else 500
+#     current_app.logger.info(f"Test mail status: {success} — {message}")
+#     return message, 200 if success else 500
 
 
 @main_bp.route("/test")
