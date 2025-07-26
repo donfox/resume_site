@@ -26,8 +26,6 @@ def validate_email(email):
     return re.match(EMAIL_REGEX, email) is not None
 
 
-import traceback
-
 def send_email(mail, recipient, subject, body_text, attachment_path=None, attachment_name=None):
     try:
         sanitized_recipient = [recipient]
@@ -51,10 +49,11 @@ def send_email(mail, recipient, subject, body_text, attachment_path=None, attach
         return True, f"✅ Email successfully sent to {recipient}"
 
     except Exception as e:
+        error_message = str(e).strip() or "Unknown Exception"
         tb = traceback.format_exc()
         current_app.logger.error(f"❌ Failed to send email: {e}")
         current_app.logger.debug(tb)
-        return False, f"Email error: {e}"
+        return False, f"Email failed: {error_message}"
 
 
 
