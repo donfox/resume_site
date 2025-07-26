@@ -26,6 +26,8 @@ def validate_email(email):
     return re.match(EMAIL_REGEX, email) is not None
 
 
+import traceback
+
 def send_email(mail, recipient, subject, body_text, attachment_path=None, attachment_name=None):
     try:
         sanitized_recipient = [recipient]
@@ -44,42 +46,42 @@ def send_email(mail, recipient, subject, body_text, attachment_path=None, attach
             with open(attachment_path, "rb") as f:
                 msg.attach(name, "application/octet-stream", f.read())
 
-        mail.send(msg)
-        return True, f"✅ Email successfully sent to {recipient}"
-    except Exception as e:
-        current_app.logger.error(f"❌ Failed to send email: {e}")
-        return False, str(e)
-
-def send_email(mail, recipient, subject, body_text, attachment_path=None, attachment_name=None):
-    try:
-        sanitized_recipient = [recipient]
-        sanitized_subject = subject.strip()
-        sanitized_sender = os.getenv("MAIL_DEFAULT_SENDER") or "you@example.com"
-
-        msg = Message(
-            subject=sanitized_subject,
-            sender=sanitized_sender,
-            recipients=sanitized_recipient,
-            body=body_text,
-        )
-
-        if attachment_path and os.path.exists(attachment_path):
-            filename = attachment_name or os.path.basename(attachment_path)
-            with open(attachment_path, "rb") as f:
-                msg.attach(secure_filename(filename), "application/octet-stream", f.read())
-
         current_app.logger.info(f"📧 Sending email to: {recipient} from {sanitized_sender}")
         mail.send(msg)
         return True, f"✅ Email successfully sent to {recipient}"
 
     except Exception as e:
+        tb = traceback.format_exc()
         current_app.logger.error(f"❌ Failed to send email: {e}")
-        current_app.logger.debug(traceback.format_exc())  # Full traceback
-        return False, f"Email failed: {str(e)}"
+        current_app.logger.debug(tb)
+        return False, f"Email error: {e}"
 
 
 
 
+# def send_email(mail, recipient, subject, body_text, attachment_path=None, attachment_name=None):
+#     try:
+#         sanitized_recipient = [recipient]
+#         sanitized_subject = subject.strip()
+#         sanitized_sender = os.getenv("MAIL_DEFAULT_SENDER") or "you@example.com"
+
+#         msg = Message(
+#             subject=sanitized_subject,
+#             sender=sanitized_sender,
+#             recipients=sanitized_recipient,
+#             body=body_text,
+#         )
+
+#         if attachment_path and os.path.exists(attachment_path):
+#             name = attachment_name or os.path.basename(attachment_path)
+#             with open(attachment_path, "rb") as f:
+#                 msg.attach(name, "application/octet-stream", f.read())
+
+#         mail.send(msg)
+#         return True, f"✅ Email successfully sent to {recipient}"
+#     except Exception as e:
+#         current_app.logger.error(f"❌ Failed to send email: {e}")
+#         return False, str(e)
 
 
 # def send_email(mail, app, recipient, subject, body, attachment_path=None):
