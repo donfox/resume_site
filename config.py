@@ -1,6 +1,7 @@
 import os
 import logging
 from logging.handlers import RotatingFileHandler
+logging.basicConfig(level=logging.DEBUG)
 from dotenv import load_dotenv
 from pathlib import Path
 
