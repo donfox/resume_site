@@ -8,7 +8,9 @@ from pathlib import Path
 # Load from .env if present (safe in both dev and production)
 load_dotenv(override=True)
 
-basedir = os.path.abspath(os.getcwd())
+# basedir = os.path.abspath(os.getcwd())
+basedir = os.path.abspath(os.path.dirname(__file__))
+SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(basedir, 'instance', 'site.db')}"
 
 def str_to_bool(value):
     return value.lower() in ("true", "1", "t", "y", "yes")

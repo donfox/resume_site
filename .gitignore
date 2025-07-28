@@ -54,4 +54,4 @@ npm-debug.log
 # static/images/
 
 # Git metadata (don't archive)
-.git/
+.git/.env
