@@ -138,6 +138,10 @@ def test_email():
     from flask_mail import Message
     from .extensions import mail
     import traceback
+    import sys
+    import smtplib
+
+    smtplib.SMTP.debuglevel = 1  # 🔍 Enable raw debug output
 
     msg = Message(
         subject="Test Email from Production",
