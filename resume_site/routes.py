@@ -137,20 +137,24 @@ def email_requests():
 def test_email():
     from flask_mail import Message
     from .extensions import mail
+    import traceback
 
     msg = Message(
         subject="Test Email from Production",
         sender=current_app.config["MAIL_DEFAULT_SENDER"],
-        recipients=["donfox1@mac.com"],  # Replace with your email
-        body="If you received this, SMTP is working in production."
+        recipients=["donfox1@mac.com"],
+        body="Production SMTP is working!"
     )
 
     try:
         mail.send(msg)
         return "✅ Test email sent successfully."
     except Exception as e:
-        current_app.logger.error(f"❌ Failed to send test email: {e}")
+        error_details = traceback.format_exc()
+        current_app.logger.error("❌ Failed to send test email:")
+        current_app.logger.error(error_details)
         return f"❌ Error sending email: {e}"
+
 
 @main_bp.route("/test")
 def test():
@@ -160,3 +164,11 @@ def test():
 @main_bp.route("/debug-photo")
 def debug_photo():
     return '<img src="/static/images/don.jpg">'
+
+
+
+
+
+
+
+
