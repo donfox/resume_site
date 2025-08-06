@@ -132,40 +132,25 @@ def email_requests():
         flash("An error occurred while retrieving data.", "danger")
         return redirect(url_for("main.index"))
 
-@main_bp.route("/test-mail")
-def test_mail():
-    """A debug route to test email sending."""
-    subject = "Test Email"
-    body = "This is a test email from the resume site."
-    recipient = "donfox1@mac.com"
-    attachment = None  # or provide a path to a test file
 
-    success, message = send_email(
-        mail,
-        sender=recipient,
-        recipients=[recipient],
-        subject=subject,
-        body=body,
-        attachment_path=attachment
+@main_bp.route("/test_email")
+def test_email():
+    from flask_mail import Message
+    from .extensions import mail
+
+    msg = Message(
+        subject="Test Email from Production",
+        sender=current_app.config["MAIL_DEFAULT_SENDER"],
+        recipients=["donfox1@mac.com"],  # Replace with your email
+        body="If you received this, SMTP is working in production."
     )
 
-    return message if success else f"❌ {message}", 200 if success else 500
-
-
-# @main_bp.route("/test-mail")
-# def test_mail():
-#     mail = current_app.extensions.get("mail")
-#     success, message = send_email(
-#         mail=mail,
-#         app=current_app,
-#         recipient="donfox1@mac.com",
-#         subject="Test Email",
-#         body="This is a test email sent from production.",
-#     )
-    
-#     current_app.logger.info(f"Test mail status: {success} — {message}")
-#     return message, 200 if success else 500
-
+    try:
+        mail.send(msg)
+        return "✅ Test email sent successfully."
+    except Exception as e:
+        current_app.logger.error(f"❌ Failed to send test email: {e}")
+        return f"❌ Error sending email: {e}"
 
 @main_bp.route("/test")
 def test():
