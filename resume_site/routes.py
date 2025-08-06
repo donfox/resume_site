@@ -151,6 +151,7 @@ def test_email():
         return "✅ Test email sent successfully."
     except Exception as e:
         error_details = traceback.format_exc()
+        print("❌ EXCEPTION OCCURRED DURING EMAIL SEND:")
         current_app.logger.error("❌ Failed to send test email:")
         current_app.logger.error(error_details)
         return f"❌ Error sending email: {e}"
