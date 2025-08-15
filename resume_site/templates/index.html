@@ -2,39 +2,41 @@
 
 {% block title %}Home Page{% endblock %}
 
-{% block body %}
-
+{% block content %}
 <main>
-  <header><br>
+  <header>
     <div class="photo-container">
-        <img src="{{ url_for('static', filename='images/don.jpg') }}" 
-        class="home-photo" alt="Don Fox - Profile Picture">        
+      <img
+        src="{{ url_for('static', filename='images/don.jpg') }}"
+        class="home-photo"
+        alt="Don Fox - Profile Picture"
+      >
     </div>
+
     <h2 class="home-name">Don Fox</h2>
     <p class="banner-tagline">
       Software Engineer | Technical Collaborator
     </p>
     <p class="construction-notice">
-      🚧 This site is under active development — expect periodic updates and improvements as time 
-      permits.
+      🚧 This site is under active development — expect periodic updates and improvements as time permits.
     </p>
   </header>
 
   <section class="intro content">
     <p>
-      I'm an experienced software engineer with a diverse background in telecommunications, technical 
-      consulting and collaboration, electronic medical records, data analysis, document archiving, 
-      and code analysis and refactoring. I've also worked with interns on R&D projects in data 
-      science and Bitcoin. Most of my work has been on Unix systems using the GNU toolchain and 
-      relational databases. I'm currently open to remote, contract, or freelance opportunities. 
+      I'm an experienced software engineer with a diverse background in telecommunications, technical
+      consulting and collaboration, electronic medical records, data analysis, document archiving,
+      and code analysis and refactoring. I've also worked with interns on R&D projects in data
+      science and Bitcoin. Most of my work has been on Unix systems using the GNU toolchain and
+      relational databases. I'm currently open to remote, contract, or freelance opportunities.
       Feel free to explore the site, request my resume, or reach out regarding possible collaborations.
-    </p>  
+    </p>
     <p>
-      This site serves as a space to share my resume, selected GitHub repositories, and reflections 
-      on books and articles. The projects and related materials reflect my interests—ranging from 
-      practical applications like Bitcoin indexing to more abstract investigations in functional 
-      programming (Haskell, Lisp, Clojure). I'm revisiting earlier Bitcoin-related work, originally 
-      built as educational tools for interns and myself, with an eye toward refining, re-implementing 
+      This site serves as a space to share my resume, selected GitHub repositories, and reflections
+      on books and articles. The projects and related materials reflect my interests—ranging from
+      practical applications like Bitcoin indexing to more abstract investigations in functional
+      programming (Haskell, Lisp, Clojure). I'm revisiting earlier Bitcoin-related work, originally
+      built as educational tools for interns and myself, with an eye toward refining, re-implementing
       in more suitable languages, and possibly evolving into standalone research pieces.
     </p>
   </section>
@@ -42,13 +44,11 @@
   <section class="construction">
     <p>As this site evolves, I may expand it, as time permits, with:</p>
     <ul>
-      <li><strong>Technical Reflections and Notes:</strong> Musings and commentary on programming 
+      <li><strong>Technical Reflections and Notes:</strong> Musings and commentary on programming
       topics that happen to interest me—likely aligned with the themes mentioned above.</li>
-      
-      <li><strong>Communication Channels:</strong> I may include a simple way for colleagues or 
+      <li><strong>Communication Channels:</strong> I may include a simple way for colleagues or
       collaborators to get in touch. For now, email or familiar apps like Telegram are preferred.</li>
     </ul>
   </section>
 </main>
-
 {% endblock %}

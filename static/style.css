@@ -1,24 +1,45 @@
-/* General Body Styling */
+/* --- Base page look --- */
+:root { 
+  --color-bg: #fff8cc;   /* warm cream */
+  --color-text: #002b59; /* softer Oxford Blue */
+}
+
+html, body, p, li, h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text) !important;
+}
+
 body {
   font-family: var(--font-primary, 'Merriweather', serif);
   font-size: 20px !important;
-  background: var(--color-bg, #ffffff);
-  color: #002244 !important;
-  line-height: 1.6;
+  line-height: 1.75; /* improved readability */
   margin: 0;
   padding: 20px;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+/* Headings slightly brighter blue */
+h1, h2, h3, h4, h5, h6 {
+  color: #003366;
 }
 
 .container {
   max-width: 950px;
-  padding: 20px;
+  padding: 24px;
   margin: auto;
   flex: 1;
+  background: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
 
+main, header, section {
+  background: transparent !important;
+}
+
+/* Alignment for header elements */
 header, header h1, header h2, header h4,
 .contact p, .banner-tagline, .home-name {
   text-align: center;
@@ -48,11 +69,14 @@ header address {
 }
 
 .construction-notice {
-  color: #fff9c4;
-  background-color: #333;
+  color: var(--color-text);
+  background-color: #fff3b0; /* softer pastel yellow */
   padding: 10px;
   font-style: italic;
   font-size: 1rem;
+  line-height: 1.35; /* tighter line spacing */
+  border: 1px solid #ccc;
+  margin: 5px 0;
 }
 
 /* Image Styling */
@@ -237,13 +261,6 @@ details summary:focus {
   text-align: center;
 }
 
-section {
-  margin-bottom: 40px;
-}
-
-section h4 {
-  margin-bottom: 15px;
-}
 section {
   margin-bottom: 40px;
 }
