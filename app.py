@@ -1,9 +1,9 @@
 # app.py
-
 from flask import render_template
 from resume_site import create_app
 
 app = create_app()
+
 
 @app.errorhandler(403)
 def forbidden(error):
@@ -20,7 +20,7 @@ def page_not_found(error):
 @app.errorhandler(500)
 def internal_error(error):
     app.logger.exception("Internal server error")
-    return render_template("500.html"), 500
+    return (render_template("500.html"), 500)
 
 
 if __name__ == "__main__":
@@ -31,6 +31,3 @@ if __name__ == "__main__":
     host = os.getenv("HOST", "127.0.0.1")
 
     app.run(host=host, port=port, debug=debug_mode)
-
-
-

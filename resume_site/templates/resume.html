@@ -1,6 +1,7 @@
 
 {% extends "base.html" %}
 {% block title %}Resume{% endblock %}
+# {% from "components/job_entry.html" import job_entry %}
 
 {% block head_extra %}
   <meta name="description" content="Detailed resume of Don Fox including skills, 
@@ -12,10 +13,6 @@
 {% from "components/request_form.html" import request_form %}
 
 {% block content %}
-  <h1 class="text-center">Resume</h1>
-  <p>Welcome! Below is the downloadable resume of Don Fox, featuring career highlights.</p>
-  <p>You can request a copy in your preferred format (PDF or DOCX) via the contact form.</p>
-
   <header>
     <h4 class="text-center">Don Fox</h4>
     <p class="text-center">
@@ -27,16 +24,15 @@
   <section class="summary">
     <h4>Summary</h4>
      <p>
-     Experienced software engineer with a broad project history working across diverse domains,
-     such as telecommunications, warehousing, medical claims and healthcare IT ...etc.  My focus 
-     has been mostly on backend development but with occasional contributions to web development. 
-     Work has been extensively on Unix platforms using the GNU toolchain and mostly relational DBs.
+     I'm software engineer with a project history spaning many diverse domains, such as telecommunications, warehousing, 
+     medical claims and healthcare IT ...etc.  My focus has been mostly on backend development but with only occasional 
+     contributions to web development. Work has been almodt exclusively on Unix platforms using the GNU toolchain. ls -lrt
+     Computer languages I've  used in the workplace 
    </p>
 
-    <p>In addition to my technical work, I have had the opportunity to mentor interns and 
-      collaborate on complex projects, emphasizing thoughtful problem-solving and reliable system 
-      design. I am currently open to remote or freelance opportunities that align with my expertise 
-      and interests.</p>
+    <p>In addition to my technical work, I have had the opportunity to mentor interns and collaborate on complex 
+      projects, emphasizing thoughtful problem-solving and reliable system design. I am currently open to remote or 
+      freelance opportunities that align with my experience and interests.</p>
   </section>
 
   <section class="education">
@@ -51,7 +47,7 @@
     <h4>Professional History</h4>
     {{ job_entry(
       "EMR Technical Solutions",
-      "Multiple Locations",
+      "Remote",
       "2009–2024",
       "https://emrts.us/",
       "Freelance developer for a healthcare IT startup across five separate engagements, focused on 
@@ -67,7 +63,7 @@
         GitHub (version control)\n        Stack: Python 3.x, Flask, PostgreSQL",
 
         "July 2015 - January 2017: Developed proof-of-concept tools and prototypes for processing 
-        medical transaction data (EDI_X12_837) and handling large medical provider datasets (JSON, 
+        medical transaction data (EDI_X12_837) and handling large medical providerT datasets (JSON, 
         XML). Extended a web services application for state governments and clinics to facilitate 
         medical provider data registration and validation.\n        Tools: Python 3.5, PostgreSQL, 
         Django, JavaScript | Platform: Unix",
@@ -83,7 +79,7 @@
         extended the application’s support for additional records processing.\n   Tools: Python, 
         Django, JavaScript (jQuery, Node.js) | Databases: MariaDB, PostgreSQL, Redis.",
         
-        "July 2009– May 2010: Conducted code analysis for GNUmed (GNUmed Documentation), 
+        "July 2009–May 2010: Conducted code analysis for GNUmed (GNUmed Documentation), 
         an open-source electronic medical record system, to evaluate its suitability for client 
         needs. Built a RESTful web service for state medical provider validation.\n    
         Tools: Python, Django | Platform: GNU/Linux."
@@ -91,37 +87,36 @@
     ) }}
 
     {% set quantuvos_description %}
-      "This was a remote technical consulting position for Quantuvos, a start-up in coaching 
-      services, at the request of the CTO. My role involved reviewing and testing code for an MVP 
-      website used by coaches and clients to schedule workshops and sessions. I provided code 
-      reviews andrecommendations to enhance the site’s functionality.
+      This was a remote technical consulting role for Quantuvos, a coaching‑platform startup. At the CTO’s request, I reviewed and tested code for the MVP used by coaches and clientsvto schedule workshops and sessions. I performed  Python code reviews, fixed issues, and recommended improvements to functionality.
     {% endset %}
 
     {{ job_entry(
       "Quantuvos",
-      "Atlanta, GA (Remote)",
+      "Remote",
       "Nov 2021 – Feb 2022",
       None,
       quantuvos_description,
-      ["Python 3.9", "Django 3.1", "PostgreSQL 14.1", "Docker", "Azure"]
+      bullets=["Python 3.9", "Django 3.1", "PostgreSQL 14.1", "Docker"],
+      bullets_render='consolidated'
     ) }}
+
 
     {% set orchid_description %}
     A remote six-month contract position, later extended to year-end, focused on document processing
     and archival. This project involved preparing documents (Word, Excel, and PDF) for submission to
-    <a href="https://www.etq.com" target="_blank">EtQ Reliance</a>. I handled programmatic 
-    modifications of Word documents, adding required tags and formats for archival purposes and 
-    manipulating spreadsheet metadata. Metadata was verified programmatically for accuracy and 
-    completeness before proceeding.
+    <a href="https://www.etq.com" target="_blank">EtQ Reliance</a>. I handled all the code modifications of Word 
+    documents, inserting tags and formats for required archival and programataclly manipulated spreadsheet 
+    metadata needed to  verify accuracy and completeness of the completed product.
     {% endset %}
 
     {{ job_entry(
       "Orchid Orthopedic Solutions",
-      "Mason, MI",
+      "Remote",
       "Feb 2020 – Dec 2020",
       "https://www.orchid-ortho.com",
       orchid_description,
-      ["Python 3.8, C#", "Windows/macOS"]
+      bullets=["Python 3.8, C#", "Windows/macOS"],
+      bullets_render='consolidated'
     ) }}
 
     {{ job_entry(
@@ -129,10 +124,10 @@
       "Jackson, MS",
       "July 2018 – Jan 2019",
       "https://www.cspire.com",
-      "Led development on this project to create a RESTful auto-provisioning API for managing 
-      customer and vendor services data. This was for tracking, logging, and reporting on customer 
-      services provided by CSpire and third-party vendors. The application supported both the 
-      business office and the network system administrator. I was a contractor.",
+      "Led development on this project to create a RESTful auto-provisioning API for managing customer and vendor 
+      product and services data. This was for tracking, logging, and reporting on customer services provided by CSpire 
+      and third-party vendors. The application supported both the business office and the network system administrator. 
+      I was a contractor.",
       ["Python 2.7, Flask, SQLAlchemy, MySQL, PostgreSQL"]
     ) }}
 
@@ -141,9 +136,8 @@
       "Mooresville, NC",
       "Aug 2012 – Jun 2013",
       "https://corporate.lowes.com",
-      "Worked on refactoring and extending legacy C code to support the transition to EMV credit 
-      and debit card  transactions. Tasks included code analysis, bug fixes, and 
-      documentation. This was a contractor role.",
+      "Worked on refactoring and extending legacy C code to support the transition to EMV credit and debit card  
+      transactions. Tasks included code analysis, bug fixes, and documentation. This was a contractor role.",
       ["C, AIX, DB2, Oracle"]
     ) }}
 
@@ -152,8 +146,8 @@
       "Memphis, TN",
       "Apr 2012 – Aug 2012",
       None,
-      "Provided <strong>production support</strong> for Hilton's Central Reservation System. 
-      Occasionally  contributed lightweight programming using C, Perl and Shell scripting.",
+      "Provided production support for Hilton's Central Reservation System. Occasionally contributed 
+      lightweight programming using C, Perl and Shell scripting.",
       ["Solaris, GNU/Linux, Informix, MySQL"]
     ) }}
 
@@ -166,7 +160,7 @@
       (State of Tennessee). Key projects included:
         <ul>
           <li>Refactoring and extending a SOAP server (written in C) for enhanced data 
-              exchange within the <strong>Medicaid Management Information System (MMIS).</li>
+              exchange within the Medicaid Management Information System (MMIS).</li>
           <li>Developing monthly report generators for various medical claims using.</li>
           <li>Porting the entire application codebase to a new 64-bit Solaris network, with updated 
               compilers and Oracle database version.</li>
@@ -191,9 +185,9 @@
       "Columbus, OH",
       "Oct 2008 – Feb 2009",
       None,
-      "I Analyzed annuity and financial data daily to detect anomalies in high-volume datasets. 
-      I proposed and began a Python-based data validation and reporting tool to modernize and 
-      replace aging shell scripts used in production.",
+      "I Analyzed annuity and financial data daily to detect anomalies ina flow of high-volume 
+      datasets. I proposed and began a Python-based data validation and reporting tool to 
+      modernize and replace aging shell scripts used in production.",
       ["Solaris, Oracle, proprietary scripting"]
     ) }}
 
@@ -204,7 +198,7 @@
       "https://www.lexmark.com/en_us.html",
       "Contract role focused on bug fixes, code analysis, and C code refactoring for high-end 
       prototype printers designed for secure environments (government, military, finance). 
-      Developed Python scripts for integration testing.",
+      Developed Python scripts for daily integration testing.",
       ["C, Python 2.6, RHEL"]
     ) }}
 
@@ -213,10 +207,8 @@
       "Atlanta, GA",
       "Jan 2007 – May 2007",
       None,
-      "A four-month contract focused on developing tools to facilitate the porting and rebuilding of
-      C/C++ applications originally developed in Microsoft Visual Studio for deployment in Unix 
-      environments. The approach emphasized leveraging residual artifacts generated by Visual Studio
-      , rather than relying on traditional makefile-based builds.",
+      "A four-month contract focused on developing tools for the porting and rebuilding of C/C++ applications originally developed in Microsoft Visual Studio for deployment in Unix environments. The approach
+      emphasized leveraging residual artifacts generated by Visual Studio, rather than relying on traditional makefile-based builds.",
       ["C/C++, macOS, Ubuntu Linux, Windows XP"]
     ) }}
 
@@ -239,7 +231,7 @@
       "This involved code extension and maintenance for a legacy billing engine running on AIX and
       GNU/Linux using ORACLE It was written primarily in C+ with occasional use of shell scripts.
       I taught a basic course in C++ to the group responsible for code acceptance testing, and 
-      wrote an application for them, in Perl, that automated the configuration of test boxes.",
+      wrote an application for them, in Perl, that automated the configuration of their test boxes.",
       ["C, C++, Perl, Oracle, AIX"]
     ) }}
 
@@ -259,10 +251,9 @@
       "Knoxville, TN",
       "Aug 2002 – Oct 2003",
       "https://ceb.utk.edu/",
-      "I created some bioinformatics tools for monitoring micro-array gene expression data. 
-      I Built bioinformatics tools for monitoring, reporting and analysis of micro-array gene
+      "I Built bioinformatics tools for monitoring, reporting and analysis of micro-array gene
       data. Also, did some tutoring of professional staff and graduate students in Perl 
-      programming for them to use in their research.",
+      (in vogue then for use in bioenformics) programming for them to use in their research.",
       ["Perl, C, MySQL, Red Hat Linux"]
     ) }}
 

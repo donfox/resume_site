@@ -1,28 +1,48 @@
-{% macro job_entry(employer, location, dates, url, description, bullets) %}
+{% macro job_entry(employer, location, dates, url, description, bullets, bullets_render='auto') %}
 <article class="job-entry">
   <details>
     <summary>
-      <strong>{{ employer }}</strong>
-      {% if location %} — {{ location }}{% endif %}
-      {% if dates %} — {{ dates }}{% endif %}
+      <strong>{{ employer }}</strong>{% if location %} — {{ location }}{% endif %}{% if dates %} — {{ dates }}{% endif %}
     </summary>
-    
+
     {% if url %}
       <p><a href="{{ url }}" target="_blank">{{ url|replace("https://", "") }}</a></p>
     {% endif %}
-    
-    <p>{{ description | striptags }}</p>
+
+    {% if description %}
+      <p>{{ description | striptags }}</p>
+    {% endif %}
 
     {% if bullets %}
-    <ul>
-      {% for item in bullets %}
-        {% if loop.last %}
-          <li>[<strong>{{ item }}</strong>]</li>
+      {% set items = bullets if (bullets is iterable and not (bullets is string)) else [bullets] %}
+
+      {% if bullets_render == 'list' %}
+        <ul>
+          {% for item in items %}
+            <li>{{ item | striptags }}</li>
+          {% endfor %}
+        </ul>
+
+      {% elif bullets_render == 'consolidated' %}
+        <ul>
+          <li>{{ items | map('striptags') | join(', ') }}</li>
+        </ul>
+
+      {% elif bullets_render == 'inline' %}
+        <p class="job-skills">{{ items | map('striptags') | join(', ') }}</p>
+
+      {% else %}
+        {# AUTO: multi-bullets if >1 item, else inline #}
+        {% if items|length > 1 %}
+          <ul>
+            {% for item in items %}
+              <li>{{ item | striptags }}</li>
+            {% endfor %}
+          </ul>
         {% else %}
-          <li>{{ item | striptags }}</li>
+          <p class="job-skills">{{ items | map('striptags') | join(', ') }}</p>
         {% endif %}
-      {% endfor %}
-    </ul>
+      {% endif %}
     {% endif %}
   </details>
 </article>
