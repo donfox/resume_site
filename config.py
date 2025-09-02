@@ -27,8 +27,6 @@ if not DATABASE_URL:
     else:
         raise RuntimeError("❌ DATABASE_URL is not set in the environment.")
 
-print("✅ DATABASE_URL resolved to:", DATABASE_URL)
-
 # Load and validate critical secrets
 SECRET_KEY = os.getenv("SECRET_KEY")
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")

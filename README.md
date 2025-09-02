@@ -1,17 +1,18 @@
 # Personal Website Flask App
 
-A personal portfolio/resume web application built using Flask. It serves a homepage, resume, references, book list, and supports logging and request form submissions.
+A personal portfolio/resume web application built using Flask.  
+It serves a homepage, résumé, references, and book reviews, with support for email form submissions, request logging, and a SQLite-backed database.
 
 ---
 
 ## 🚀 Features
 - Homepage with custom content
-- Resume rendered from templates
-- Email request submission form
-- References and book list pages
-- Templating with Jinja2
-- Logging to file
+- Résumé rendered from templates
+- References and book reviews
+- Email request submission form (Flask-Mail)
+- Logging to file and stdout
 - SQLite database for request tracking
+- Developer tooling (Makefile, pre-commit hooks, tests)
 
 ---
 
@@ -25,18 +26,12 @@ A personal portfolio/resume web application built using Flask. It serves a homep
 
 ---
 
-## 💻 Development Environment
-- Editor: Sublime Text 4
-- Python Environment: Miniconda virtual environment
-
----
-
 ## 📁 Project Structure
 ```
 .
-├── app.py                  # Entry point
+├── app.py                  # Dev entry point
 ├── config.py               # App configuration
-├── personal_website/       # Core app package
+├── resume_site/            # Core app package
 │   ├── __init__.py
 │   ├── models.py           # SQLAlchemy models
 │   ├── routes.py           # Application routes
@@ -44,52 +39,70 @@ A personal portfolio/resume web application built using Flask. It serves a homep
 │   ├── utils.py            # Helper functions
 │   └── templates/          # Jinja2 templates
 ├── static/                 # Static files (CSS, images, PDFs)
-├── instance/site.db        # SQLite database
-├── logs/app.log            # Log output
+├── instance/dev.db         # SQLite dev database
+├── logs/                   # Log files
+├── scripts/dev_db.py       # Database create/drop/reset utility
+├── backups/                # Timestamped DB backups
 ├── tests/                  # Pytest unit tests
+├── pyproject.toml          # Packaging & dependencies
 ├── requirements.txt        # Runtime dependencies
-├── requirements-dev.txt    # Dev/test dependencies
+├── Makefile                # Task runner (dev/prod commands)yes
 └── README.md               # Project description
 ```
 
 ---
 
-## 🧪 Running Locally
+## 💻 Development Setup
 
 ### 1. Clone the repo
 ```bash
 git clone <repo-url>
-cd personal_website
+cd resume_site_project
 ```
 
-### 2. Create and activate virtual environment
+### 2. Create and activate environment
 ```bash
-python -m venv venv
-source venv/bin/activate  # or venv\Scripts\activate on Windows
+conda create -n flask_env python=3.11
+conda activate flask_env
 ```
+(or `python -m venv venv && source venv/bin/activate`)
 
 ### 3. Install dependencies
 ```bash
-pip install -r requirements.txt
-pip install -r requirements-dev.txt
+# install project + dev tools in editable mode
+make install
 ```
 
-### 4. Set environment variables (optional)
+### 4. Initialize database
 ```bash
-export FLASK_APP=app.py
-export FLASK_ENV=development
+make db-create          # create dev.db if missing
+make db-status          # check DB size & table count
+make db-backup          # back up dev.db
+make db-reset CONFIRM=YES   # backup + reset tables (requires explicit confirm)
+make db-restore         # restore most recent backup
 ```
 
 ### 5. Run the app
 ```bash
-flask run
+make run
 ```
 
 ---
 
-## ✅ Tests
+## 🧪 Tests & Linting
 ```bash
-pytest tests/
+make test       # run pytest
+make lint       # check style (ruff)
+make format     # autoformat (black + ruff --fix)
+make pre-commit # run all pre-commit hooks
+```
+
+---
+
+## 🛠️ Production (local test)
+```bash
+# Example using Gunicorn
+gunicorn wsgi:app -w 2 -k gthread --threads 8   --timeout 60 --graceful-timeout 30 -b 0.0.0.0:8000
 ```
 
 ---

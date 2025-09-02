@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "resume-site"
+version = "0.1.0"
+description = "Flask résumé site"
+readme = "README.md" 
+requires-python = ">=3.10"
+
+# Keep deps minimal; you can add more later.
+dependencies = [
+  "Flask>=3.0",
+  "Flask-Mail>=0.9",
+  "Flask-SQLAlchemy>=3.1",
+  "python-dotenv>=1.0",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+# Tell setuptools where to find your package
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["resume_site*"]
+
+# Ensure templates/static are installed with the package
+[tool.setuptools.package-data]
+"resume_site" = ["templates/**", "static/**"]
