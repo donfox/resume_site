@@ -180,6 +180,13 @@ footer p {
   transition: color 0.3s ease-in-out;
 }
 
+.footer-link.active {
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: default;
+  color: #555; /* slightly dimmer so it looks disabled */
+}
+
 .footer-link:hover {
   text-decoration: underline;
   color: #0056b3;
@@ -187,6 +194,15 @@ footer p {
 
 .footer-link i {
   vertical-align: middle;
+}
+
+/* Active page (not clickable) */
+.footer-link.active {
+  color: #6c757d;   /* Bootstrap’s gray-600 */
+  font-weight: normal;
+  text-decoration: none;
+  cursor: default;
+  pointer-events: none; /* disables click */
 }
 
 /* Flash Messages */

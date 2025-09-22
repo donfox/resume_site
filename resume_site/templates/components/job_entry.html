@@ -1,4 +1,4 @@
-{% macro job_entry(employer, location, dates, url, description, bullets, bullets_render='auto') %}
+<!-- {% macro job_entry(employer, location, dates, url, description, bullets, bullets_render='auto') %}
 <article class="job-entry">
   <details>
     <summary>
@@ -33,6 +33,56 @@
 
       {% else %}
         {# AUTO: multi-bullets if >1 item, else inline #}
+        {% if items|length > 1 %}
+          <ul>
+            {% for item in items %}
+              <li>{{ item | striptags }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="job-skills">{{ items | map('striptags') | join(', ') }}</p>
+        {% endif %}
+      {% endif %}
+    {% endif %}
+  </details>
+</article>
+{% endmacro %} -->
+
+{% macro job_entry(employer, location, dates, url, description, bullets, bullets_render='auto') %}
+<article class="job-entry">
+  <details>
+    <summary>
+      <strong>{{ employer }}</strong>{% if location %} — {{ location }}{% endif %}{% if dates %} — {{ dates }}{% endif %}
+    </summary>
+
+    {# normalize url -> list #}
+    {% set urls = url if (url is iterable and not (url is string)) else [url] %}
+    {% if urls %}
+      <p>
+        {% for u in urls if u %}
+          <a href="{{ u }}" target="_blank" rel="noopener">{{ u|replace("https://", "") }}</a>{% if not loop.last %} &nbsp;|&nbsp;{% endif %}
+        {% endfor %}
+      </p>
+    {% endif %}
+
+    {% if description %}
+      <p>{{ description | striptags }}</p>
+    {% endif %}
+
+    {% if bullets %}
+      {% set items = bullets if (bullets is iterable and not (bullets is string)) else [bullets] %}
+
+      {% if bullets_render == 'list' %}
+        <ul>
+          {% for item in items %}
+            <li>{{ item | striptags }}</li>
+          {% endfor %}
+        </ul>
+      {% elif bullets_render == 'consolidated' %}
+        <ul><li>{{ items | map('striptags') | join(', ') }}</li></ul>
+      {% elif bullets_render == 'inline' %}
+        <p class="job-skills">{{ items | map('striptags') | join(', ') }}</p>
+      {% else %}
         {% if items|length > 1 %}
           <ul>
             {% for item in items %}
