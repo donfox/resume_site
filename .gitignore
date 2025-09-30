@@ -83,4 +83,4 @@ Miniconda*-MacOSX-arm64.sh
 # Optional static clutter (uncomment if needed)
 # ---------------------------
 # static/files/
-# static/images/
+# static/images/.env
