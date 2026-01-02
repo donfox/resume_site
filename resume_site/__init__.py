@@ -1,20 +1,20 @@
 # resume_site/__init__.py
-
+import os
 import logging
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
-import smtplib
 
 from flask import Flask, render_template
-
-from config import Config
-from .extensions import db, mail
-from .routes import main_bp  # <-- single blueprint to register
 from dotenv import load_dotenv
 
-# Disable smtplib verbose output globally (can override with APP_SMTP_DEBUG if you add it later)
-smtplib.SMTP.debuglevel = 0
-load_dotenv()
+from config import Config
+from .extensions import db, mail, migrate
+from .routes import main_bp
+
+
+# Load .env next to project root (repo root = parent of resume_site/)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+load_dotenv(dotenv_path=PROJECT_ROOT / ".env")
 
 
 def create_app(config_object: dict | None = None) -> Flask:
@@ -30,10 +30,17 @@ def create_app(config_object: dict | None = None) -> Flask:
 
     # --- Extensions ---
     db.init_app(app)
+
+    # Ensure models are imported so Alembic sees metadata BEFORE migrate.init_app
+    from . import models  # noqa: F401
+
+    # Register Flask-Migrate CLI
+    migrate.init_app(app, db)
+
+    # Mail (tolerate missing creds in some envs)
     try:
         mail.init_app(app)
     except Exception:
-        # Optional if mail extension may be absent in some environments
         pass
 
     # --- Logging ---
@@ -42,13 +49,13 @@ def create_app(config_object: dict | None = None) -> Flask:
     # Safe summary (avoid printing full DATABASE_URL with creds)
     uri = app.config.get("SQLALCHEMY_DATABASE_URI", "")
     backend = uri.split(":", 1)[0] if ":" in uri else uri
-    app.logger.info("App initialized. DB backend=%s ENV=%s", backend, app.config.get("FLASK_ENV"))
+    mode = "debug" if app.debug else "production"
+    app.logger.info("App initialized. DB backend=%s mode=%s", backend, mode)
 
     # --- Asset checks (optional) ---
     photo_path = Path(app.static_folder) / "images" / "don.jpg"
     if not photo_path.exists():
         app.logger.warning("Home photo not found at: %s", photo_path)
-
     for name in ("Resume.v3.4.pdf", "Resume.v3.4.docx"):
         resume_path = Path(app.static_folder) / "files" / name
         if not resume_path.exists():
@@ -66,36 +73,22 @@ def create_app(config_object: dict | None = None) -> Flask:
     def handle_500_error(e):
         return render_template("500.html"), 500
 
-    # --- Optional: config sanity + dev DB init ---
-    try:
-        from .utils import validate_config  # local import to avoid cycles
-        validate_config(app)
-    except Exception as exc:
-        app.logger.warning("validate_config skipped or failed: %s", exc)
-
-    # Only auto-create tables in testing or development
-    if app.testing or app.debug:
-        with app.app_context():
-            try:
-                db.create_all()
-                app.logger.info("✅ Database tables created or verified (dev/test).")
-            except Exception as e:
-                app.logger.exception("❌ Failed to create database tables")
-
+    # No db.create_all() here; we’ll use migrations.
     return app
 
 
 def _configure_logging(app: Flask) -> None:
     """Attach console + rotating file handlers based on Config; avoid duplicates."""
-    # Clear any pre-existing handlers (reloader / repeated factories)
     if app.logger.handlers:
         app.logger.handlers.clear()
 
     level = app.config.get("LOGGING_LEVEL", logging.INFO)
-    fmt = app.config.get("LOG_FORMAT", "%(asctime)s — %(name)s — %(levelname)s — %(message)s")
+    fmt = app.config.get(
+        "LOG_FORMAT", "%(asctime)s — %(name)s — %(levelname)s — %(message)s"
+    )
     formatter = logging.Formatter(fmt)
 
-    # Console handler (always)
+    # Console handler
     console = logging.StreamHandler()
     console.setLevel(level)
     console.setFormatter(formatter)
@@ -105,6 +98,7 @@ def _configure_logging(app: Flask) -> None:
     if not app.testing:
         log_dir = Path(app.config.get("LOG_DIR", "logs"))
         log_dir.mkdir(parents=True, exist_ok=True)
+
         log_file_cfg = app.config.get("LOG_FILE", "app.log")
         log_file = Path(log_file_cfg)
         if not log_file.is_absolute():
@@ -112,7 +106,9 @@ def _configure_logging(app: Flask) -> None:
 
         max_bytes = int(app.config.get("MAX_LOG_SIZE", 100_000))
         backups = int(app.config.get("BACKUP_COUNT", 1))
-        file_handler = RotatingFileHandler(log_file, maxBytes=max_bytes, backupCount=backups)
+        file_handler = RotatingFileHandler(
+            log_file, maxBytes=max_bytes, backupCount=backups
+        )
         file_handler.setLevel(level)
         file_handler.setFormatter(formatter)
         app.logger.addHandler(file_handler)
@@ -120,8 +116,5 @@ def _configure_logging(app: Flask) -> None:
     app.logger.setLevel(level)
     app.logger.propagate = False
 
-    # Optional: align Werkzeug logs (or set WARNING to quiet per-request lines)
+    # Quiet down Werkzeug unless you want per-request logs
     logging.getLogger("werkzeug").setLevel(level)
-
-
-    

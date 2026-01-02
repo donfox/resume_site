@@ -6,19 +6,5 @@ SQLAlchemy==2.0.30
 psycopg[binary]==3.2.10   # PostgreSQL driver
 alembic==1.13.2          # DB migrations (if using Flask-Migrate)
 
-# Forms & Validation (if used in your site)
-Flask-WTF==1.2.1
-WTForms==3.1.2
-
 # Environment variables
 python-dotenv==1.0.1
-
-# Testing
-pytest==8.3.3
-
-# Email (via SendGrid API)
-sendgrid==6.11.0
-
-# Optional: file generation (if sending resumes as attachments)
-reportlab==4.2.2     # PDFs
-python-docx==1.1.2   # Word docs
