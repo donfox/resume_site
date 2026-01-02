@@ -79,6 +79,34 @@ header address {
   margin: 5px 0;
 }
 
+.availability-notice {
+  background-color: #fff9e6; /* soft warm yellow/cream */
+  border-left: 4px solid #cc8800; /* gold/amber accent */
+  padding: 16px 20px;
+  margin: 30px 0;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.availability-notice p {
+  margin: 0;
+  font-size: 22px;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: #002b59; /* keep dark blue text */
+}
+
+.availability-notice a {
+  color: #0056b3; /* dark blue link */
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.availability-notice a:hover {
+  text-decoration: underline;
+  color: #003d82;
+}
+
 /* Image Styling */
 img {
   display: block;
@@ -101,7 +129,7 @@ img:hover {
   width: 250px;
   height: 320px;
   margin: 20px auto;
-  background-color: #f0f8ff;
+  background-color: transparent;
   padding: 10px;
   border-radius: 50%;
   overflow: hidden;
