@@ -1,17 +1,29 @@
 /* --- Base page look --- */
-:root { 
-  --color-bg: #fff8cc;   /* warm cream */
-  --color-text: #002b59; /* softer Oxford Blue */
+:root {
+  --color-bg: #fff8cc;
+  /* warm cream */
+  --color-text: #002b59;
+  /* softer Oxford Blue */
 }
 
-html, body, p, li, h1, h2, h3, h4, h5, h6 {
+html,
+body,
+p,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--color-text) !important;
 }
 
 body {
   font-family: var(--font-primary, 'Merriweather', serif);
   font-size: 20px !important;
-  line-height: 1.75; /* improved readability */
+  line-height: 1.75;
+  /* improved readability */
   margin: 0;
   padding: 20px;
   display: flex;
@@ -21,7 +33,12 @@ body {
 }
 
 /* Headings slightly brighter blue */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: #003366;
 }
 
@@ -35,13 +52,20 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: none !important;
 }
 
-main, header, section {
+main,
+header,
+section {
   background: transparent !important;
 }
 
 /* Alignment for header elements */
-header, header h1, header h2, header h4,
-.contact p, .banner-tagline, .home-name {
+header,
+header h1,
+header h2,
+header h4,
+.contact p,
+.banner-tagline,
+.home-name {
   text-align: center;
 }
 
@@ -70,18 +94,22 @@ header address {
 
 .construction-notice {
   color: var(--color-text);
-  background-color: #fff3b0; /* softer pastel yellow */
+  background-color: #fff3b0;
+  /* softer pastel yellow */
   padding: 10px;
   font-style: italic;
   font-size: 1rem;
-  line-height: 1.35; /* tighter line spacing */
+  line-height: 1.35;
+  /* tighter line spacing */
   border: 1px solid #ccc;
   margin: 5px 0;
 }
 
 .availability-notice {
-  background-color: #fff9e6; /* soft warm yellow/cream */
-  border-left: 4px solid #cc8800; /* gold/amber accent */
+  background-color: #fff9e6;
+  /* soft warm yellow/cream */
+  border-left: 4px solid #cc8800;
+  /* gold/amber accent */
   padding: 16px 20px;
   margin: 30px 0;
   border-radius: 4px;
@@ -91,13 +119,15 @@ header address {
 .availability-notice p {
   margin: 0;
   font-size: 22px;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Merriweather', serif;
   line-height: 1.6;
-  color: #002b59; /* keep dark blue text */
+  color: #002b59;
+  /* keep dark blue text */
 }
 
 .availability-notice a {
-  color: #0056b3; /* dark blue link */
+  color: #0056b3;
+  /* dark blue link */
   text-decoration: none;
   font-weight: 600;
 }
@@ -158,19 +188,51 @@ img:hover {
   font-size: 28px;
   font-weight: 700;
   margin-top: 10px;
-  font-family: 'Lora', serif;
+  font-family: 'Merriweather', serif;
   color: #002244;
 }
 
+/* Logo Styling */
+.logo-container {
+  width: 200px;
+  margin: 20px auto 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-logo {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
+  border: none;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.header-logo:hover {
+  transform: scale(1.02);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
+  border: none;
+}
+
 /* Text & Lists */
-p, li, .intro, .construction, section {
+p,
+li,
+.intro,
+.construction,
+section {
   text-align: justify !important;
   hyphens: auto;
   word-break: break-word;
 }
 
 /* Headings */
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
   text-align: left;
   font-weight: 700;
   color: #001933;
@@ -203,7 +265,7 @@ footer p {
   text-decoration: none;
   font-size: 18px;
   font-weight: 600;
-  font-family: 'Lora', serif;
+  font-family: 'Merriweather', serif;
   display: inline-block;
   transition: color 0.3s ease-in-out;
 }
@@ -212,7 +274,8 @@ footer p {
   font-weight: bold;
   text-decoration: underline;
   cursor: default;
-  color: #555; /* slightly dimmer so it looks disabled */
+  color: #555;
+  /* slightly dimmer so it looks disabled */
 }
 
 .footer-link:hover {
@@ -226,11 +289,13 @@ footer p {
 
 /* Active page (not clickable) */
 .footer-link.active {
-  color: #6c757d;   /* Bootstrap’s gray-600 */
+  color: #6c757d;
+  /* Bootstrap’s gray-600 */
   font-weight: normal;
   text-decoration: none;
   cursor: default;
-  pointer-events: none; /* disables click */
+  pointer-events: none;
+  /* disables click */
 }
 
 /* Flash Messages */
@@ -311,4 +376,9 @@ section {
 
 section h4 {
   margin-bottom: 15px;
+}
+
+.technical-skills p {
+  margin: 0;
+  line-height: 1.5;
 }
