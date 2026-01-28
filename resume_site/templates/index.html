@@ -1,44 +1,43 @@
 {% extends "base.html" %}
 
-{% block title %}Home Page{% endblock %}
+{% block title %}Don Fox - Software Engineer{% endblock %}
+
+{% block head_extra %}
+<meta name="description"
+  content="Don Fox - Software engineer with 25+ years experience in C/C++, Python, Perl, and Elixir. Specializing in backend systems, healthcare IT, and Unix/Linux development.">
+{% endblock %}
 
 {% block content %}
 <main>
   <header>
     <div class="photo-container">
-      <img
-        src="{{ url_for('static', filename='images/don.jpg') }}"
-        class="home-photo"
-        alt="Don Fox - Profile Picture"
-      >
+      <img src="{{ url_for('static', filename='images/don.jpg') }}" class="home-photo" alt="Don Fox - Profile Picture">
     </div>
 
     <h2 class="home-name">Don Fox</h2>
     <p class="banner-tagline">
-      Software Engineer | Technical Collaborator
+      Software Engineer | Backend Systems & Healthcare IT
     </p>
   </header>
 
   <section class="intro content">
- <p>
-  I'm a software developer with experience spanning telecommunications, healthcare IT,
-  data systems, and technical documentation. Most of my work has been on Unix platforms
-  using the GNU toolchain. I've also mentored interns on R&D projects involving data science,
-  Bitcoin indexing, and related areas. Increasingly, I'm drawn to exploratory work at the
-  intersection of functional programming, formal methods, and AI prompt engineering.
-</p>
-  <p>
-    This site showcases my resume, GitHub projects, and reflections on books and articles. The
-    work ranges from practical tools like Bitcoin indexing to conceptual explorations in Haskell,
-    Lisp, and Clojure. Many projects began as intern collaborations that I've continued to refine
-    and extend.
-  </p>
-  </section>
+    <p>
+      Software developer with 25+ years of experience building backend systems for telecommunications,
+      healthcare IT, and data platforms. I specialize in C/C++, Python, Perl, and Elixir on Unix/Linux
+      systems, with recent work exploring AI engineering and functional programming approaches.
+    </p>
+    <p>
+      This site features my <a href="{{ url_for('main.resume') }}">professional resume</a>,
+      <a href="https://github.com/donfox" target="_blank" rel="noopener">GitHub projects</a>, and technical
+      <a href="{{ url_for('main.books') }}">reading notes</a>. I've mentored interns on data
+      science and cryptocurrency projects, and continue to explore new technologies through
+      personal R&D work.
 
-  <section class="availability-notice">
-    <p><strong>Open to Opportunities:</strong> I'm currently available for remote contract
-    positions, including part-time work. For inquiries, reach out at
-    <a href="mailto:donfox1@mac.com">donfox1@mac.com</a></p>
-  </section>
+    <section class="availability-notice">
+      <p><strong>Open to Opportunities:</strong> I'm currently available for remote contract
+        positions, including part-time work. For inquiries, reach out at
+        <a href="mailto:donfox1@mac.com">donfox1@mac.com</a>
+      </p>
+    </section>
 </main>
 {% endblock %}

@@ -1,6 +1,7 @@
 import os
 import logging
 from logging.handlers import RotatingFileHandler
+
 logging.basicConfig(level=logging.DEBUG)
 from dotenv import load_dotenv
 from pathlib import Path
@@ -12,8 +13,10 @@ load_dotenv(override=True)
 basedir = os.path.abspath(os.path.dirname(__file__))
 SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(basedir, 'instance', 'site.db')}"
 
+
 def str_to_bool(value):
     return value.lower() in ("true", "1", "t", "y", "yes")
+
 
 # Determine environment
 ENV = os.getenv("FLASK_ENV", "production")
@@ -33,10 +36,12 @@ ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 if not SECRET_KEY or not ADMIN_PASSWORD:
     raise ValueError("SECRET_KEY and ADMIN_PASSWORD must be set in the environment.")
 
+
 class Config:
     DEBUG = ENV == "development"
     SECRET_KEY = SECRET_KEY
     ADMIN_PASSWORD = ADMIN_PASSWORD
+    ADMIN_ROUTE = os.getenv("ADMIN_ROUTE", "/secret-email-view-98347")
 
     SQLALCHEMY_DATABASE_URI = DATABASE_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -46,10 +51,14 @@ class Config:
     MAIL_USERNAME = os.getenv("BREVO_MAIL_USERNAME") or os.getenv("MAIL_USERNAME")
     MAIL_PASSWORD = os.getenv("BREVO_MAIL_PASSWORD") or os.getenv("MAIL_PASSWORD")
     MAIL_PORT = int(os.getenv("BREVO_MAIL_PORT") or os.getenv("MAIL_PORT", 587))
-    MAIL_USE_TLS = str_to_bool(os.getenv("BREVO_MAIL_USE_TLS") or os.getenv("MAIL_USE_TLS", "True"))
+    MAIL_USE_TLS = str_to_bool(
+        os.getenv("BREVO_MAIL_USE_TLS") or os.getenv("MAIL_USE_TLS", "True")
+    )
     MAIL_USE_SSL = str_to_bool(os.getenv("MAIL_USE_SSL", "False"))
     # MAIL_DEFAULT_SENDER = os.getenv("MAIL_DEFAULT_SENDER")
-    MAIL_DEFAULT_SENDER = os.getenv("BREVO_MAIL_DEFAULT_SENDER") or os.getenv("MAIL_DEFAULT_SENDER")
+    MAIL_DEFAULT_SENDER = os.getenv("BREVO_MAIL_DEFAULT_SENDER") or os.getenv(
+        "MAIL_DEFAULT_SENDER"
+    )
 
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SECURE = False

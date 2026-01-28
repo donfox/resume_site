@@ -11,7 +11,7 @@ from flask import (
     request,
     flash,
     current_app,
-    Response
+    Response,
 )
 from sqlalchemy import text
 
@@ -20,6 +20,11 @@ from .utils import send_email, validate_email
 
 logger = logging.getLogger(__name__)
 main_bp = Blueprint("main", __name__)
+
+
+def get_admin_route():
+    """Get admin route from config, with fallback."""
+    return current_app.config.get("ADMIN_ROUTE", "/admin-email-requests")
 
 
 # Home page route
@@ -61,10 +66,22 @@ def resume():
             return redirect(url_for("main.resume"))
 
         # --- Send email ---
-        subject = "Your Requested Resume"
+        subject = f"Resume for Don Fox - {resume_format.upper()}"
         body = (
-            f"Hello {user_name or 'there'},\n\n"
-            "Thank you for your interest. Attached is the resume you requested."
+            f"Hello{' ' + user_name if user_name else ''},\n\n"
+            "Thank you for your interest in my professional background. "
+            f"I've attached my resume in {resume_format.upper()} format as requested.\n\n"
+            "The resume includes details about my experience in:\n"
+            "- Backend Systems Development (C/C++, Python, Perl, Elixir)\n"
+            "- Healthcare IT and Medical Systems\n"
+            "- Unix/Linux Platform Engineering\n"
+            "- Database Design and Optimization\n\n"
+            "Feel free to reach out if you have any questions or would like to discuss "
+            "potential opportunities.\n\n"
+            "Best regards,\n"
+            "Don Fox\n"
+            "donfox1@mac.com\n"
+            "(865) 360-0089"
         )
         filename = "Resume.v3.4.pdf" if resume_format == "pdf" else "Resume.v3.4.docx"
         attachment_path = os.path.join(current_app.static_folder, "files", filename)
@@ -119,16 +136,19 @@ def authenticate():
 def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        if request.args.get("password") != os.getenv("ADMIN_PASSWORD"):
+        auth = request.authorization
+        if not auth or not check_auth(auth.password):
             return authenticate()
         return f(*args, **kwargs)
 
     return decorated
 
 
-@main_bp.route("/secret-email-view-98347")
+@main_bp.route("/admin-email-requests")
 @requires_auth
 def email_requests():
+    # Note: Route path can be customized via ADMIN_ROUTE environment variable
+    # but this provides a sensible default. For production, set a unique path.
     try:
         requests = EmailRequest.query.all()
         return render_template("email_requests.html", email_requests=requests)

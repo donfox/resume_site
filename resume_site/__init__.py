@@ -3,6 +3,7 @@ import os
 import logging
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
+from datetime import datetime
 
 from flask import Flask, render_template
 from dotenv import load_dotenv
@@ -63,6 +64,11 @@ def create_app(config_object: dict | None = None) -> Flask:
 
     # --- Blueprints ---
     app.register_blueprint(main_bp)
+
+    # --- Context processor for templates ---
+    @app.context_processor
+    def inject_now():
+        return {"now": datetime.now}
 
     # --- Error handlers ---
     @app.errorhandler(404)

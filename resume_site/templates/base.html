@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>{% block title %}My Website{% endblock %}</title>
@@ -8,53 +9,56 @@
   <!-- Frameworks first -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto&family=Lora:wght@400;600&display=swap"
+    rel="stylesheet">
 
   <!-- Your CSS last (cache-busted) -->
-  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v=5) }}"> -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v=16) }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v=17) }}">
 </head>
+
 <body class="{% block body_class %}{% endblock %}">
   <div class="container mt-4">
     {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% endfor %}
-      {% endif %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
     {% endwith %}
 
     {% block content %}{% endblock %}
   </div>
 
   <footer class="text-center mt-4">
-  <div class="d-flex flex-wrap justify-content-center gap-3">
-    {% set links = [
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+      {% set links = [
       ('Home', 'main.index'),
       ('Resume', 'main.resume'),
       ('Books', 'main.books'),
       ('References', 'main.references')
-    ] %}
+      ] %}
 
-    {% for label, endpoint in links %}
+      {% for label, endpoint in links %}
       {% if request.endpoint == endpoint %}
-        <span class="footer-link active">{{ label }}</span>
+      <span class="footer-link active">{{ label }}</span>
       {% else %}
-        <a href="{{ url_for(endpoint) }}" class="footer-link">{{ label }}</a>
+      <a href="{{ url_for(endpoint) }}" class="footer-link">{{ label }}</a>
       {% endif %}
-    {% endfor %}
+      {% endfor %}
 
-    <!-- External link stays a normal link -->
-    <a href="https://github.com/donfox" target="_blank" class="footer-link">
-      <i class="fab fa-github me-1"></i>GitHub
-    </a>
-  </div>
-  <p class="mt-3 text-center mb-2">&copy; 2026 Don Fox</p>
-</footer>
+      <!-- External link stays a normal link -->
+      <a href="https://github.com/donfox" target="_blank" class="footer-link">
+        <i class="fab fa-github me-1"></i>GitHub
+      </a>
+    </div>
+    <p class="mt-3 text-center mb-2">&copy; {{ now().year }} Don Fox</p>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

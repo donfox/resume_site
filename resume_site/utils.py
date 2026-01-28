@@ -13,33 +13,39 @@ from flask_mail import Message, Mail
 
 REQUIRED_MAIL_CONFIG = ("MAIL_DEFAULT_SENDER", "MAIL_SERVER", "MAIL_PORT")
 
-def validate_config(app) -> bool:
+
+def validate_config(app) -> None:
     """
-    Light sanity check for mail-related config. Logs a friendly message and
-    returns True/False (not raising) so app startup never hard-crashes in dev/test.
+    Light sanity check for mail-related config. Logs a friendly message.
+    Does not raise so app startup never hard-crashes in dev/test.
     """
     missing = [k for k in REQUIRED_MAIL_CONFIG if not app.config.get(k)]
     if missing:
         app.logger.warning(f"⚠️ Missing mail config keys: {', '.join(missing)}")
-        return False
-    app.logger.info("All required mail configuration keys are present.")
-    return True
+    else:
+        app.logger.info("All required mail configuration keys are present.")
+
 
 # --- Email validation ---
 
 EMAIL_REGEX = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
+
 def validate_email(email: str) -> bool:
     """Basic email format check using regex."""
     return bool(email and EMAIL_REGEX.match(email))
 
+
 # --- Helpers for attachments ---
+
 
 def _guess_mimetype(path: Path) -> str:
     typ, _ = mimetypes.guess_type(str(path))
     return typ or "application/octet-stream"
 
+
 # --- Email send wrapper ---
+
 
 def send_email(
     mail: Mail,
@@ -77,6 +83,22 @@ def send_email(
             body=body,
         )
 
+        # TODO: SPAM ISSUE - Update BREVO_MAIL_DEFAULT_SENDER in .env
+        # Currently sending from donfox1@mac.com through Brevo causes spam filtering
+        # because Apple's domain doesn't authorize Brevo's servers (SPF/DKIM failure).
+        # FIX: Use a Brevo-verified sender address from your Brevo account dashboard.
+        # Go to: https://app.brevo.com → Settings → Senders
+        # Then update .env: BREVO_MAIL_DEFAULT_SENDER=your-verified-email@yourdomain.com
+
+        # Add reply-to to make it look more legitimate
+        msg.reply_to = "donfox1@mac.com"
+
+        # Add custom headers to reduce spam score
+        msg.extra_headers = {
+            "X-Mailer": "Flask-Mail",
+            "X-Priority": "3",
+        }
+
         if attachment_path:
             p = Path(attachment_path)
             if not p.exists() or not p.is_file():
@@ -90,7 +112,9 @@ def send_email(
                         data=fh.read(),
                     )
 
-        current_app.logger.info(f"📧 Sending email to: {to_email} from {default_sender}")
+        current_app.logger.info(
+            f"📧 Sending email to: {to_email} from {default_sender}"
+        )
         mail.send(msg)
         return True, "OK"
 

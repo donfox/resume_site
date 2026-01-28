@@ -5,8 +5,22 @@
 {% block content %}
 <div class="container text-center references-page mt-4">
     <h2>References and Recommendations</h2>
-    <img src="{{ url_for('static', filename='images/Recommendation_Dave_Schultz.jpg') }}" 
-         alt="References and Recommendations" 
-         class="img-fluid mt-3" style="max-width: 90%; height: auto;">
+
+    <!-- Document reference -->
+    <div class="mt-4">
+        <h4>Dave Schultz</h4>
+        <img src="{{ url_for('static', filename='images/Recommendation_Dave_Schultz.jpg') }}"
+            alt="Reference from Dave Schultz" class="img-fluid mt-3" style="max-width: 90%; height: auto;">
+    </div>
+
+    <!-- Text-only reference -->
+    <div class="reference-text mt-5" style="max-width: 600px; margin: 0 auto; text-align: left;">
+        <h4>Additional Reference</h4>
+        <p><strong>Name:</strong> Verbus Counts</p>
+        <p><strong>Title:</strong> [Title]</p>
+        <p><strong>Company:</strong> EMR Technical Solutions</p>
+        <p><strong>Email:</strong> verbus@gmail.com</p>
+        <p><strong>Phone:</strong> (803) 727-8576</p>
+    </div>
 </div>
 {% endblock %}
