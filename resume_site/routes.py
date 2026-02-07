@@ -83,7 +83,7 @@ def resume():
             "donfox1@mac.com\n"
             "(865) 360-0089"
         )
-        filename = "Resume.v3.4.pdf" if resume_format == "pdf" else "Resume.v3.4.docx"
+        filename = "Resume.v3.7.pdf" if resume_format == "pdf" else "Resume.v3.7.docx"
         attachment_path = os.path.join(current_app.static_folder, "files", filename)
 
         mail = current_app.extensions.get("mail")

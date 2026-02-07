@@ -3,6 +3,7 @@ import re
 import pytest
 import tempfile
 
+
 # --- Integration: POST /resume triggers send_email once (patch where it's used) ---
 def test_resume_post_sends_email_success(client, monkeypatch):
     # Patch on the module that USES these names (resume_site.routes), not resume_site.utils
@@ -12,6 +13,7 @@ def test_resume_post_sends_email_success(client, monkeypatch):
     monkeypatch.setattr(routes_mod, "validate_email", lambda e: True, raising=True)
 
     called = {}
+
     def fake_send_email(mail, to, subject, body, attachment_path):
         called["args"] = (mail, to, subject, body, attachment_path)
         return True, "OK"
@@ -28,20 +30,27 @@ def test_resume_post_sends_email_success(client, monkeypatch):
     _mail, to, subject, body, attachment_path = called["args"]
     assert to == "donfox1@mac.com"
     assert re.search(r"resume", subject, re.IGNORECASE)
-    assert os.path.basename(attachment_path).lower() in ("resume.v3.4.pdf", "resume.v3.4.docx")
+    assert os.path.basename(attachment_path).lower() in (
+        "resume.v3.7.pdf",
+        "resume.v3.7.docx",
+    )
 
 
 # --- Invalid email path: should redirect back to /resume ---
 def test_resume_post_invalid_email_redirects(client, monkeypatch):
     import resume_site.routes as routes_mod
+
     monkeypatch.setattr(routes_mod, "validate_email", lambda e: False, raising=True)
 
-    resp = client.post("/resume", data={"name": "X", "email": "not-an-email"}, follow_redirects=False)
+    resp = client.post(
+        "/resume", data={"name": "X", "email": "not-an-email"}, follow_redirects=False
+    )
     assert resp.status_code in (302, 303)
     assert "/resume" in resp.headers.get("Location", "")
 
 
 # --- /test_email route: ensure Mail.send is called exactly once ---
+
 
 def test_test_email_route_uses_mail_send(client, monkeypatch):
     try:
@@ -54,6 +63,7 @@ def test_test_email_route_uses_mail_send(client, monkeypatch):
         app.config["MAIL_SUPPRESS_SEND"] = True  # safety
 
     sent = {"count": 0}
+
     def fake_send(self, message):  # class-level patch => needs (self, message)
         sent["count"] += 1
 
@@ -63,9 +73,10 @@ def test_test_email_route_uses_mail_send(client, monkeypatch):
     resp = client.get("/test_email")
     assert resp.status_code == 200
     assert sent["count"] == 1
-    
+
 
 # --- Unit: utils.send_email attaches a PDF and calls Mail.send ---
+
 
 def test_email_with_pdf_attachment(app, monkeypatch):
     from resume_site import utils
@@ -75,6 +86,7 @@ def test_email_with_pdf_attachment(app, monkeypatch):
     assert mail is not None
 
     captured = {}
+
     def fake_send(message):  # instance-level patch ⇒ no `self`
         captured["message"] = message
 

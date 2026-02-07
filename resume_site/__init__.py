@@ -57,7 +57,7 @@ def create_app(config_object: dict | None = None) -> Flask:
     photo_path = Path(app.static_folder) / "images" / "don.jpg"
     if not photo_path.exists():
         app.logger.warning("Home photo not found at: %s", photo_path)
-    for name in ("Resume.v3.4.pdf", "Resume.v3.4.docx"):
+    for name in ("Resume.v3.7.pdf", "Resume.v3.7.docx"):
         resume_path = Path(app.static_folder) / "files" / name
         if not resume_path.exists():
             app.logger.warning("Missing resume file: %s", resume_path)

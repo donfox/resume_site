@@ -9,7 +9,7 @@ app = create_app()
 @app.errorhandler(403)
 def forbidden(error):
     app.logger.warning(f"403 Forbidden: {error}")
-    return render_template("403.html"), 403(RESUME_)
+    return render_template("403.html"), 403
 
 
 if __name__ == "__main__":
