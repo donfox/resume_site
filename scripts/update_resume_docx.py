@@ -299,6 +299,32 @@ def update_saic_description(doc):
         )
 
 
+def fix_emrts_bullet_formatting(doc):
+    """
+    Remove the 'Strong' character style from all EMRTS bullet runs so the
+    text appears in normal weight, and normalise 'Tools:' -> 'Tech:'.
+    'Tools' and ':' may appear in adjacent runs, so handle both cases.
+    """
+    W = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+    for p in doc.paragraphs:
+        for r in p.runs:
+            rPr = r._element.find(f"{{{W}}}rPr")
+            if rPr is None:
+                continue
+            rStyle = rPr.find(f"{{{W}}}rStyle")
+            if rStyle is not None and rStyle.get(f"{{{W}}}val") == "Strong":
+                rPr.remove(rStyle)
+                r.bold = False
+                if "Tools:" in r.text:
+                    r.text = r.text.replace("Tools:", "Tech:")
+    # Handle split-run case: "Tools" and ":" in consecutive runs
+    for p in doc.paragraphs:
+        runs = p.runs
+        for i, r in enumerate(runs[:-1]):
+            if r.text == "Tools" and runs[i + 1].text.startswith(":"):
+                r.text = "Tech"
+
+
 def update_ut_dates(doc):
     p = find_para(doc, "Aug 2002 \u2013 Oct 2003")
     if p:
@@ -358,6 +384,7 @@ def main():
         ("SAIC description", update_saic_description),
         ("UT Center dates", update_ut_dates),
         ("Manhattan description", update_manhattan_description),
+        ("EMRTS bullet bold/Tools fix", fix_emrts_bullet_formatting),
     ]
 
     for label, fn in updates:

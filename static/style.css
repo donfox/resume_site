@@ -19,6 +19,11 @@ h6 {
   color: var(--color-text) !important;
 }
 
+a {
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
 body {
   font-family: var(--font-primary, 'Merriweather', serif);
   font-size: 16px !important;
@@ -342,7 +347,7 @@ details summary {
   margin: 10px 0;
   list-style: none;
   padding: 4px 20px 4px 20px;
-  color: #001933;
+  color: var(--color-text);
   position: relative;
 }
 
