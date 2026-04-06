@@ -22,13 +22,13 @@
   <section class="summary">
     <h4>Summary</h4>
     <p>
-      I'm a software engineer with experience across telecommunications, warehousing, healthcare IT,
-      and data systems. My work focuses on backend development on Unix platforms using the GNU toolchain,
-      with additional web development experience.
+      Thirty years of professional software development spanning telecommunications, warehousing,
+      healthcare IT, and data systems. Primary focus has been backend engineering on Unix/Linux
+      platforms, with experience across a broad range of languages, databases, and system
+      architectures. More recent work includes web development, functional programming, and applied
+      AI/prompt engineering. Proof-of-concept development — particularly in healthcare IT — has been
+      a recurring part of the work, as has occasional intern mentoring.
     </p>
-
-    <p>I've mentored interns and collaborated on complex projects, emphasizing thoughtful problem-solving
-      and reliable system design. I'm currently open to remote or freelance opportunities.</p>
   </section>
 
   <section class="education">
@@ -55,10 +55,10 @@
     "Remote",
     "2009–Present",
     ["https://emrts.us/", "https://edmonddatascience.com/", "https://providervault.us"],
-    "Freelance developer for a healthcare IT startup across six engagements, focused on open-source
-    solutions for medical records, billing, provider enrollment, and claims. Projects included rapid
-    prototyping and R&D with academic and professional collaborators. Note: Gaps between EMRTS
-    engagements are covered by contracts listed below.",
+    "Software engineer working with a healthcare IT startup across six engagements, developing
+    open-source tools for medical records, billing, provider enrollment, and claims. Work has
+    centered on proof-of-concept development and R&D, often in collaboration with academic and
+    professional partners. Contracts listed below fill the gaps between EMRTS engagements.",
 
     [
     "July 2025–Current: Developing a proof-of-concept application for a Provider Vault medical
@@ -73,53 +73,60 @@
     returned to academic commitments.\n\n <strong>Tech:</strong> macOS, Windows, EMRTS Linux network,
     GitHub, Python 3.x, Flask, PostgreSQL",
 
+    "<em>— Interim contracts: <a href='#cspire'>CSpire, Jackson MS (Jul 2018–Jan 2019)</a>; <a href='#orchid'>Orchid
+        Orthopedic Solutions, Remote (Feb 2020–Dec 2020)</a>; <a href='#quantuvos'>Quantuvos, Remote (Jul 2021–Feb
+        2022)</a> — see entries below.</em>",
+
     "July 2015–January 2017: Developed proof-of-concept tools and prototypes for processing
     medical transaction data (EDI_X12_837) and handling large medical provider datasets (JSON,
     XML). Extended a web services application for state governments and clinics to facilitate
     medical provider data registration and validation.\n <strong>Tech:</strong> Python 3.5, PostgreSQL,
-    Django, JavaScript | Platform: Unix\n\n
-    (Interim: CSpire contract, July 2018–Jan 2019; Orchid Orthopedic Solutions, Feb 2020–Dec 2020; Quantuvos, Nov 2021–Feb 2022)",
+    Django, JavaScript | Platform: Unix",
 
     "October 2013–March 2015: Developed research-driven projects for mobile medical screenings
     and provider enrollment for state governments. Contributed to developing a Health Information
     Exchange (HIE) application for hospitals.\n
     <strong>Tech:</strong> Elixir/Phoenix | Platform: Ubuntu Linux, macOS | Databases: MariaDB, PostgreSQL, MongoDB",
 
-    "November 2011–March 2012: Focused on electronic medical records, claims processing, and
+    "<em>— Interim contracts: <a href='#hilton'>Hilton, Memphis TN (Apr 2012–Aug 2012)</a>; <a href='#lowes-2012'>Lowes
+        Inc., Mooresville NC (Aug 2012–Jun 2013)</a> — see entries below.</em>",
+
+    "January 2012–March 2012: Focused on electronic medical records, claims processing, and
     provider enrollment applications on GNU/Linux. Developed tools for handling JSON data and
     extended the application's support for additional records processing.\n <strong>Tech:</strong> Python,
-    Django, JavaScript (jQuery, Node.js) | Databases: MariaDB, PostgreSQL, Redis\n\n
-    (Interim: Hilton contract, Apr 2012–Aug 2012, and Lowes Inc., Aug 2012–Jun 2013)",
+    Django, JavaScript (jQuery, Node.js) | Databases: MariaDB, PostgreSQL, Redis",
+
+    "<em>— Interim contract: <a href='#hewlett-packard'>Hewlett-Packard, Nashville TN (May 2010–Dec 2011)</a> — see
+      entry below.</em>",
 
     "July 2009–May 2010: Conducted code analysis for GNUmed, an open-source electronic medical
     record system, to evaluate its suitability for client needs. Built a RESTful web service for state medical provider
-    validation.\n
-    <strong>Tech:</strong> Python, Django | Platform: GNU/Linux\n\n
-    (Interim: Hewlett-Packard contract, May 2010–Dec 2011)"
+    validation.\n <strong>Tech:</strong> Python, Django | Platform: GNU/Linux"
     ]
     ) }}
 
     {% set quantuvos_description %}
-    Tecnical consulting for Quantuvos, a coaching-platform startup. Reviewed and tested code for the MVP
-    used by coaches and clients to schedule workshops and sessions. Performed code reviews, fixed issues, and
-    recommended improvements to functionality.
+    Technical consulting for Quantuvos, a coaching-platform startup. Reviewed and evaluated code for the
+    client-facing MVP, supporting coaches and clients in scheduling workshops and sessions. Performed code
+    reviews, identified issues, and recommended improvements. Contract position.
     {% endset %}
 
     {{ job_entry(
     "Quantuvos",
     "Remote",
-    "Nov 2021–Feb 2022",
+    "Jul 2021–Feb 2022",
     None,
     quantuvos_description,
     bullets=["<strong>Tech:</strong> Python 3.9", "Django 3.1", "PostgreSQL 14.1", "Docker"],
-    bullets_render='consolidated'
+    bullets_render='consolidated',
+    anchor='quantuvos'
     ) }}
 
     {% set orchid_description %}
-    Contract for document processing and archival, preparing Word, Excel, and PDF files for
-    submission to <a href="https://www.etq.com" target="_blank">EtQ Reliance</a>. Modified Word documents by
-    inserting tags and formatting for archival requirements. Programmatically manipulated spreadsheet metadata
-    to verify accuracy and completeness.
+    Contract work preparing Word, Excel, and PDF documents for archival submission to
+    <a href="https://www.etq.com" target="_blank">EtQ Reliance</a>. Programmatically inserted tags and
+    formatting in Word documents and validated spreadsheet metadata for accuracy and completeness.
+    Contract position.
     {% endset %}
 
     {{ job_entry(
@@ -129,7 +136,8 @@
     "https://www.orchid-ortho.com",
     orchid_description,
     bullets=["<strong>Tech:</strong> Python 3.8, C#", "Windows/macOS"],
-    bullets_render='consolidated'
+    bullets_render='consolidated',
+    anchor='orchid'
     ) }}
 
     {{ job_entry(
@@ -137,10 +145,11 @@
     "Jackson, MS",
     "July 2018–Jan 2019",
     "https://www.cspire.com",
-    "Led development of a RESTful auto-provisioning API for managing customer and vendor product and services data,
-    tracking, logging, and reporting on customer services provided by CSpire and third-party vendors. The application
-    supported both the business office and network system administrators. Contract position.",
-    ["<strong>Tech:</strong> Python 2.7, Flask, SQLAlchemy, MySQL, PostgreSQL"]
+    "Led development of a RESTful auto-provisioning API for tracking and managing customer services delivered
+    through CSpire and its third-party vendor partners. The application supported logging, reporting, and
+    administration for both business office and network teams. Contract position.",
+    ["<strong>Tech:</strong> Python 2.7, Flask, SQLAlchemy, MySQL, PostgreSQL"],
+    anchor='cspire'
     ) }}
 
     {{ job_entry(
@@ -148,9 +157,11 @@
     "Mooresville, NC",
     "Aug 2012–Jun 2013",
     "https://corporate.lowes.com",
-    "Refactored and extended legacy C code to support the transition to EMV credit and debit card transactions.
-    Tasks included code analysis, bug fixes, and documentation. Contract position.",
-    ["<strong>Tech:</strong> C, AIX, DB2, Oracle"]
+    "Refactored and extended legacy C code to support EMV (chip-based credit and debit card) transaction
+    processing as part of Lowe's transition away from magnetic stripe. Work included code analysis, bug
+    fixes, and documentation. Contract position.",
+    ["<strong>Tech:</strong> C, AIX, DB2, Oracle"],
+    anchor='lowes-2012'
     ) }}
 
     {{ job_entry(
@@ -158,9 +169,10 @@
     "Memphis, TN",
     "Apr 2012–Aug 2012",
     None,
-    "Provided production support for Hilton's Central Reservation System. Contributed
-    programming support using C, Perl, and shell scripting.",
-    ["<strong>Tech:</strong> Solaris, GNU/Linux, Informix, MySQL"]
+    "Provided production support for Hilton's Central Reservation System, contributing bug fixes and
+    maintenance using C, Perl, and shell scripting. Contract position.",
+    ["<strong>Tech:</strong> Solaris, GNU/Linux, Informix, MySQL"],
+    anchor='hilton'
     ) }}
 
     {{ job_entry(
@@ -177,7 +189,8 @@
         compilers and Oracle database version.</li>
       <li>Contributed to technical writing and documentation.</li>
     </ul>",
-    ["<strong>Tech:</strong> C, PL/SQL, SOAP, Oracle, Solaris"]
+    ["<strong>Tech:</strong> C, PL/SQL, SOAP, Oracle, Solaris"],
+    anchor='hewlett-packard'
     ) }}
 
     {{ job_entry(
@@ -187,7 +200,7 @@
     None,
     "Migrated MMIS (Medicaid Management Information System) software for TennCare from
     Hewlett-Packard's infrastructure to ACS. Developed automation scripts and analyzed legacy C
-    modules.",
+    modules. Contract position.",
     ["<strong>Tech:</strong> C, Python 2.6, Unix"]
     ) }}
 
@@ -207,7 +220,7 @@
     "Lexington, KY",
     "May 2007–Oct 2008",
     "https://www.lexmark.com/en_us.html",
-    "Performed bug fixes, code analysis, and C code refactoring for high-end prototype printers
+    "Bug fixes, code analysis, and refactoring of C code for high-end prototype printers
     designed for secure environments (government, military, finance). Developed Python scripts
     for daily integration testing. Contract position.",
     ["<strong>Tech:</strong> C, Python 2.6, RHEL"]
@@ -218,10 +231,9 @@
     "Atlanta, GA",
     "Jan 2007–May 2007",
     None,
-    "Developed tools for porting and rebuilding C/C++ applications originally developed in Microsoft
-    Visual Studio for deployment in Unix environments. The approach leveraged residual artifacts
-    generated by Visual Studio, rather than relying on traditional makefile-based builds.
-    Contract position.",
+    "Developed tools for porting and rebuilding C/C++ applications from Microsoft Visual Studio
+    to Unix environments, using Visual Studio build artifacts rather than traditional
+    makefile-based builds. Contract position.",
     ["<strong>Tech:</strong> C/C++, macOS, Ubuntu Linux, Windows XP"]
     ) }}
 
@@ -230,8 +242,9 @@
     "Wilkesboro, NC",
     "Feb 2006–Dec 2006",
     None,
-    "Internationalized software for Lowe's first Canadian store. Maintained and extended
-    existing C and shell scripting on AIX.",
+    "Adapted Lowe's point-of-sale software for the company's first Canadian store, modifying C
+    code to support Canadian currency, credit/debit card processing, and compliance with Canadian
+    legal and regulatory requirements. Work done on AIX. Contract position.",
     ["<strong>Tech:</strong> C, AIX, Oracle, DB2"]
     ) }}
 
@@ -252,16 +265,15 @@
     "Oak Ridge, TN",
     "Feb 2003–Aug 2004",
     "https://saic.com",
-    "Maintained and expanded the functionality of a legacy Perl application used for network-wide
-    resource and account maintenance at the Oak Ridge and Los Alamos National Labs until it was
-    replaced.",
+    "Maintained and extended a legacy Perl application for network-wide resource and account
+    management at Oak Ridge and Los Alamos National Laboratories until it was decommissioned.",
     ["<strong>Tech:</strong> Perl, C, Oracle, Unix"]
     ) }}
 
     {{ job_entry(
     "University of Tennessee–Center for Environmental Biotechnology",
     "Knoxville, TN",
-    "Aug 2002–Oct 2003",
+    "Aug 2002–Dec 2002",
     "https://ceb.utk.edu/",
     "Built bioinformatics tools for monitoring, reporting, and analysis of microarray gene
     data. Tutored professional staff and graduate students in Perl programming for
@@ -274,8 +286,8 @@
     "Atlanta, GA",
     "Jul 2001–Jul 2002",
     None,
-    "Performed code maintenance on a cross-platform warehouse management application written in
-    C++ for Linux and Windows, with Linux as the primary platform.",
+    "Performed code maintenance on a cross-platform warehouse management system written in
+    C++ for Linux and Windows. Contract position.",
     ["<strong>Tech:</strong> C++, Oracle, Linux, Windows, MKS Toolkit, Microsoft Advanced Windows Server OS"]
     ) }}
 
@@ -319,4 +331,37 @@
   </section>
 </main>
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Attach click handler to every internal anchor link on the page
+    document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        var id = this.getAttribute('href').substring(1);
+        var target = document.getElementById(id);
+        if (!target) return;
+        var det = target.querySelector('details');
+        if (det) det.open = true;
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.pushState(null, '', '#' + id);
+      });
+    });
+
+    // Also open + scroll if page loaded with a hash in the URL
+    if (window.location.hash) {
+      var id = window.location.hash.substring(1);
+      var target = document.getElementById(id);
+      if (target) {
+        var det = target.querySelector('details');
+        if (det) det.open = true;
+        setTimeout(function () {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    }
+  });
+</script>
 {% endblock %}

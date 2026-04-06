@@ -73,8 +73,13 @@ npm-debug.log
 # ---------------------------
 Miniconda*-MacOSX-arm64.sh
 
+# ---------------------------# Resume backup / working copies
 # ---------------------------
-# Git metadata (don’t archive)
+static/files/*.backup.docx
+static/files/* copy*.docx
+static/files/~$*.docx
+
+# ---------------------------# Git metadata (don’t archive)
 # ---------------------------
 .git/
 .gitignore
