@@ -24,6 +24,11 @@ ENV = os.getenv("FLASK_ENV", "production")
 # Load and validate DATABASE_URL with fallback to SQLite in dev
 DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
 
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1)
+elif DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
+
 if not DATABASE_URL:
     if ENV == "development":
         DATABASE_URL = "sqlite:///dev.db"
