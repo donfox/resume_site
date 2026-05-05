@@ -72,9 +72,18 @@ def send_email(
         if mail is None:
             return False, "Mail extension is not initialized"
 
-        default_sender = current_app.config.get("MAIL_DEFAULT_SENDER")
-        if not default_sender:
-            return False, "MAIL_DEFAULT_SENDER is not configured"
+        required = {
+            "MAIL_DEFAULT_SENDER": current_app.config.get("MAIL_DEFAULT_SENDER"),
+            "MAIL_SERVER": current_app.config.get("MAIL_SERVER"),
+            "MAIL_PORT": current_app.config.get("MAIL_PORT"),
+            "MAIL_USERNAME": current_app.config.get("MAIL_USERNAME"),
+            "MAIL_PASSWORD": current_app.config.get("MAIL_PASSWORD"),
+        }
+        missing = [k for k, v in required.items() if not v]
+        if missing:
+            return False, f"Missing mail config: {', '.join(missing)}"
+
+        default_sender = required["MAIL_DEFAULT_SENDER"]
 
         msg = Message(
             subject=subject,

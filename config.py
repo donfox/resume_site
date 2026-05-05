@@ -52,7 +52,12 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     MAIL_DEBUG = 0
-    MAIL_SERVER = os.getenv("BREVO_MAIL_SERVER") or os.getenv("MAIL_SERVER")
+    # Default to Brevo relay host when not explicitly set in environment.
+    MAIL_SERVER = (
+        os.getenv("BREVO_MAIL_SERVER")
+        or os.getenv("MAIL_SERVER")
+        or "smtp-relay.brevo.com"
+    )
     MAIL_USERNAME = os.getenv("BREVO_MAIL_USERNAME") or os.getenv("MAIL_USERNAME")
     MAIL_PASSWORD = os.getenv("BREVO_MAIL_PASSWORD") or os.getenv("MAIL_PASSWORD")
     MAIL_PORT = int(os.getenv("BREVO_MAIL_PORT") or os.getenv("MAIL_PORT", 587))
