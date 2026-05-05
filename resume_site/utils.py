@@ -6,9 +6,11 @@ import mimetypes
 import socket
 import smtplib
 import time
+import base64
 from pathlib import Path
 from typing import Optional, Tuple
 
+import requests
 from flask import current_app
 from flask_mail import Message, Mail
 
@@ -58,19 +60,83 @@ def send_email(
     attachment_path: Optional[str] = None,
 ) -> Tuple[bool, str]:
     """
-    Compose and send an email via Flask-Mail.
-
-    Args (positional, to match existing callers):
-        mail: Flask-Mail instance (e.g., current_app.extensions["mail"])
-        to_email: Recipient email address
-        subject: Email subject
-        body: Plain-text body
-        attachment_path: Optional filesystem path to a file to attach
-
-    Returns:
-        (success, message)
-        success=True on send success; otherwise False with a short reason.
+    Send email via Brevo HTTP API (preferred) with Flask-Mail SMTP fallback.
+    Uses BREVO_API_KEY env var when available; otherwise falls back to SMTP.
     """
+    api_key = current_app.config.get("BREVO_API_KEY")
+    if api_key:
+        return _send_via_brevo_api(api_key, to_email, subject, body, attachment_path)
+    return _send_via_smtp(mail, to_email, subject, body, attachment_path)
+
+
+def _send_via_brevo_api(
+    api_key: str,
+    to_email: str,
+    subject: str,
+    body: str,
+    attachment_path: Optional[str] = None,
+) -> Tuple[bool, str]:
+    """Call Brevo transactional email REST API (HTTPS/443 — works on all platforms)."""
+    default_sender = current_app.config.get("MAIL_DEFAULT_SENDER")
+    if not default_sender:
+        return False, "MAIL_DEFAULT_SENDER is not configured"
+
+    payload: dict = {
+        "sender": {"email": default_sender},
+        "to": [{"email": to_email}],
+        "replyTo": {"email": "donfox1@mac.com"},
+        "subject": subject,
+        "textContent": body,
+    }
+
+    if attachment_path:
+        p = Path(attachment_path)
+        if p.exists() and p.is_file():
+            mime, _ = mimetypes.guess_type(str(p))
+            with p.open("rb") as fh:
+                encoded = base64.b64encode(fh.read()).decode()
+            payload["attachment"] = [
+                {"name": p.name, "content": encoded}
+            ]
+        else:
+            current_app.logger.warning("Attachment not found: %s", attachment_path)
+
+    started = time.monotonic()
+    current_app.logger.info(
+        "📧 Sending email to: %s from %s via Brevo HTTP API", to_email, default_sender
+    )
+    try:
+        resp = requests.post(
+            "https://api.brevo.com/v3/smtp/email",
+            headers={"api-key": api_key, "Content-Type": "application/json"},
+            json=payload,
+            timeout=20,
+        )
+        elapsed = time.monotonic() - started
+        if resp.status_code in (200, 201):
+            current_app.logger.info("✅ Email sent via Brevo API in %.2fs", elapsed)
+            return True, "OK"
+        else:
+            current_app.logger.error(
+                "❌ Brevo API error %s: %s", resp.status_code, resp.text
+            )
+            return False, f"Brevo API error {resp.status_code}: {resp.text}"
+    except requests.Timeout:
+        current_app.logger.error("❌ Brevo API request timed out")
+        return False, "Brevo API request timed out"
+    except Exception as e:
+        current_app.logger.error("❌ Brevo API call failed: %s", e, exc_info=True)
+        return False, f"Brevo API call failed: {e}"
+
+
+def _send_via_smtp(
+    mail: Mail,
+    to_email: str,
+    subject: str,
+    body: str,
+    attachment_path: Optional[str] = None,
+) -> Tuple[bool, str]:
+    """Flask-Mail SMTP path (used when BREVO_API_KEY is not set)."""
     try:
         if mail is None:
             return False, "Mail extension is not initialized"
@@ -94,35 +160,17 @@ def send_email(
             recipients=[to_email],
             body=body,
         )
-
-        # TODO: SPAM ISSUE - Update BREVO_MAIL_DEFAULT_SENDER in .env
-        # Currently sending from donfox1@mac.com through Brevo causes spam filtering
-        # because Apple's domain doesn't authorize Brevo's servers (SPF/DKIM failure).
-        # FIX: Use a Brevo-verified sender address from your Brevo account dashboard.
-        # Go to: https://app.brevo.com → Settings → Senders
-        # Then update .env: BREVO_MAIL_DEFAULT_SENDER=your-verified-email@yourdomain.com
-
-        # Add reply-to to make it look more legitimate
         msg.reply_to = "donfox1@mac.com"
-
-        # Add custom headers to reduce spam score
-        msg.extra_headers = {
-            "X-Mailer": "Flask-Mail",
-            "X-Priority": "3",
-        }
+        msg.extra_headers = {"X-Mailer": "Flask-Mail", "X-Priority": "3"}
 
         if attachment_path:
             p = Path(attachment_path)
             if not p.exists() or not p.is_file():
-                current_app.logger.warning(f"Attachment not found: {p}")
+                current_app.logger.warning("Attachment not found: %s", p)
             else:
                 mime = _guess_mimetype(p)
                 with p.open("rb") as fh:
-                    msg.attach(
-                        filename=p.name,
-                        content_type=mime,
-                        data=fh.read(),
-                    )
+                    msg.attach(filename=p.name, content_type=mime, data=fh.read())
 
         started = time.monotonic()
         current_app.logger.info(

@@ -51,6 +51,8 @@ class Config:
     SQLALCHEMY_DATABASE_URI = DATABASE_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    BREVO_API_KEY = os.getenv("BREVO_API_KEY")
+
     MAIL_DEBUG = 0
     # Default to Brevo relay host when not explicitly set in environment.
     MAIL_SERVER = (

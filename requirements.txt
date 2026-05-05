@@ -13,7 +13,8 @@ alembic==1.13.2
  
 # Email
 Flask-Mail==0.10.0
- 
+requests==2.32.3
+
 # Environment variables
 python-dotenv==1.0.1
  
