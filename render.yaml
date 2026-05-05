@@ -24,6 +24,8 @@ services:
         sync: false
       - key: BREVO_MAIL_PORT
         sync: false
+      - key: BREVO_MAIL_TIMEOUT
+        sync: false
       - key: BREVO_MAIL_USE_TLS
         sync: false
       - key: BREVO_MAIL_DEFAULT_SENDER

@@ -3,6 +3,9 @@ from __future__ import annotations
 
 import re
 import mimetypes
+import socket
+import smtplib
+import time
 from pathlib import Path
 from typing import Optional, Tuple
 
@@ -121,12 +124,26 @@ def send_email(
                         data=fh.read(),
                     )
 
+        started = time.monotonic()
         current_app.logger.info(
-            f"📧 Sending email to: {to_email} from {default_sender}"
+            "📧 Sending email to: %s from %s via %s:%s (timeout=%ss)",
+            to_email,
+            default_sender,
+            current_app.config.get("MAIL_SERVER"),
+            current_app.config.get("MAIL_PORT"),
+            current_app.config.get("MAIL_TIMEOUT"),
         )
         mail.send(msg)
+        elapsed = time.monotonic() - started
+        current_app.logger.info("✅ Email send completed in %.2fs", elapsed)
         return True, "OK"
 
+    except (socket.timeout, TimeoutError):
+        current_app.logger.error("❌ SMTP timeout while sending email", exc_info=True)
+        return False, "SMTP connection timed out"
+    except smtplib.SMTPServerDisconnected as e:
+        current_app.logger.error("❌ SMTP server disconnected", exc_info=True)
+        return False, f"SMTP disconnected: {e}"
     except Exception as e:
         current_app.logger.error("❌ Failed to send email:", exc_info=True)
         return False, f"Error sending email: {e}"

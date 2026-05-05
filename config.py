@@ -61,6 +61,7 @@ class Config:
     MAIL_USERNAME = os.getenv("BREVO_MAIL_USERNAME") or os.getenv("MAIL_USERNAME")
     MAIL_PASSWORD = os.getenv("BREVO_MAIL_PASSWORD") or os.getenv("MAIL_PASSWORD")
     MAIL_PORT = int(os.getenv("BREVO_MAIL_PORT") or os.getenv("MAIL_PORT", 587))
+    MAIL_TIMEOUT = int(os.getenv("BREVO_MAIL_TIMEOUT") or os.getenv("MAIL_TIMEOUT", 15))
     MAIL_USE_TLS = str_to_bool(
         os.getenv("BREVO_MAIL_USE_TLS") or os.getenv("MAIL_USE_TLS", "True")
     )
