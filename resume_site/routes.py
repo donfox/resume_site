@@ -99,7 +99,7 @@ def resume():
                     "You've already requested a resume. Sending another copy!", "info"
                 )
             else:
-                flash(f"Your résumé was sent to {user_email}.", "success")
+                flash(f"Your resume was sent to {user_email}.", "success")
         else:
             flash(f"Could not send email: {message}", "danger")
 
