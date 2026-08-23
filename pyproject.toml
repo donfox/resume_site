@@ -6,16 +6,10 @@ build-backend = "setuptools.build_meta"
 name = "resume-site"
 version = "0.1.0"
 description = "Flask résumé site"
-readme = "README.md" 
+readme = "README.md"
 requires-python = ">=3.10"
 
-# Keep deps minimal; you can add more later.
-dependencies = [
-  "Flask>=3.0",
-  "Flask-Mail>=0.9",
-  "Flask-SQLAlchemy>=3.1",
-  "python-dotenv>=1.0",
-]
+# Runtime dependencies are managed in requirements.txt, not here.
 
 [tool.setuptools]
 include-package-data = true

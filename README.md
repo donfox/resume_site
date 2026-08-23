@@ -44,7 +44,7 @@ It serves a homepage, résumé, references, and book reviews, with support for e
 ├── scripts/dev_db.py       # Database create/drop/reset utility
 ├── backups/                # Timestamped DB backups
 ├── tests/                  # Pytest unit tests
-├── pyproject.toml          # Packaging & dependencies
+├── pyproject.toml          # Packaging metadata
 ├── requirements.txt        # Runtime dependencies
 ├── Makefile                # Task runner (dev/prod commands)yes
 └── README.md               # Project description

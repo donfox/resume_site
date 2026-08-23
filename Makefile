@@ -10,7 +10,7 @@ PYTHON := python3
 help:
 	@echo ""
 	@echo "Available commands:"
-	@echo "  make install     - pip install -e .[dev]"
+	@echo "  make install     - install package (editable) + requirements"
 	@echo "  make dev         - install requirements + pre-commit hooks"
 	@echo "  make run         - run Flask dev server"
 	@echo "  make test        - run tests"
@@ -26,7 +26,8 @@ help:
 	@echo ""
 
 install:
-	$(PYTHON) -m pip install -e .[dev]
+	$(PYTHON) -m pip install -e .
+	$(PYTHON) -m pip install -r requirements.txt -r requirements-dev.txt
 
 dev:
 	$(PYTHON) -m pip install -r requirements.txt || true
