@@ -22,11 +22,6 @@ logger = logging.getLogger(__name__)
 main_bp = Blueprint("main", __name__)
 
 
-def get_admin_route():
-    """Get admin route from config, with fallback."""
-    return current_app.config.get("ADMIN_ROUTE", "/admin-email-requests")
-
-
 # Home page route
 @main_bp.route("/")
 def index():
@@ -150,11 +145,11 @@ def requires_auth(f):
     return decorated
 
 
-@main_bp.route("/admin-email-requests")
 @requires_auth
 def email_requests():
-    # Note: Route path can be customized via ADMIN_ROUTE environment variable
-    # but this provides a sensible default. For production, set a unique path.
+    # Registered dynamically in create_app() at the path from ADMIN_ROUTE
+    # (config.py), not via @main_bp.route — the URL is obscurity on top of
+    # requires_auth, never a substitute for it.
     try:
         requests = EmailRequest.query.all()
         return render_template("email_requests.html", email_requests=requests)

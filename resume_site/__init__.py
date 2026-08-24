@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 from config import Config
 from .extensions import db, mail, migrate
-from .routes import main_bp
+from .routes import main_bp, email_requests
 
 
 # Load .env next to project root (repo root = parent of resume_site/)
@@ -64,6 +64,17 @@ def create_app(config_object: dict | None = None) -> Flask:
 
     # --- Blueprints ---
     app.register_blueprint(main_bp)
+
+    # Registered directly on the app (not via @main_bp.route) so the path can
+    # come from ADMIN_ROUTE, only known once app.config is loaded above.
+    # main_bp is a module-level singleton reused across create_app() calls
+    # (e.g. once per test), and Flask forbids add_url_rule on a blueprint
+    # that's already been registered to any app — hence registering on app.
+    app.add_url_rule(
+        app.config["ADMIN_ROUTE"],
+        endpoint="main.email_requests",
+        view_func=email_requests,
+    )
 
     # --- Context processor for templates ---
     @app.context_processor
