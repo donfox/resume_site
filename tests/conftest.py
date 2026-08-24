@@ -55,6 +55,9 @@ def app(test_db_path, monkeypatch):
         "SQLALCHEMY_DATABASE_URI": f"sqlite:///{test_db_path}",
         "SQLALCHEMY_TRACK_MODIFICATIONS": False,
         "MAIL_SUPPRESS_SEND": True,
+        # Force the Flask-Mail/SMTP code path in resume_site.utils.send_email
+        # instead of a live Brevo API call, regardless of the shell environment.
+        "BREVO_API_KEY": None,
         "MAIL_SERVER": "localhost",
         "MAIL_PORT": 8025,
         "MAIL_USE_TLS": False,

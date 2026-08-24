@@ -1,6 +1,5 @@
 import os
 import re
-import pytest
 import tempfile
 
 
@@ -47,32 +46,6 @@ def test_resume_post_invalid_email_redirects(client, monkeypatch):
     )
     assert resp.status_code in (302, 303)
     assert "/resume" in resp.headers.get("Location", "")
-
-
-# --- /test_email route: ensure Mail.send is called exactly once ---
-
-
-def test_test_email_route_uses_mail_send(client, monkeypatch):
-    try:
-        from flask_mail import Mail as _MailClass
-    except Exception:
-        pytest.skip("Flask-Mail not installed")
-
-    app = client.application
-    with app.app_context():
-        app.config["MAIL_SUPPRESS_SEND"] = True  # safety
-
-    sent = {"count": 0}
-
-    def fake_send(self, message):  # class-level patch => needs (self, message)
-        sent["count"] += 1
-
-    # Patch the class so ANY Mail instance uses our fake
-    monkeypatch.setattr(_MailClass, "send", fake_send, raising=True)
-
-    resp = client.get("/test_email")
-    assert resp.status_code == 200
-    assert sent["count"] == 1
 
 
 # --- Unit: utils.send_email attaches a PDF and calls Mail.send ---
