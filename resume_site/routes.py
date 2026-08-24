@@ -40,7 +40,17 @@ def resume():
         user_name = request.form.get("name")
         user_email = request.form.get("email")
         resume_format = request.form.get("format", "pdf")
+        if resume_format not in ("pdf", "word"):
+            resume_format = "pdf"
         ip_address = request.remote_addr
+
+        user_name = user_name.strip() if user_name else ""
+        if not user_name:
+            flash("Please provide your name.", "danger")
+            return redirect(url_for("main.resume"))
+        if len(user_name) > 128:
+            flash("Name must be 128 characters or fewer.", "danger")
+            return redirect(url_for("main.resume"))
 
         if not user_email or not validate_email(user_email):
             flash("Please provide a valid email address.", "danger")
@@ -66,11 +76,13 @@ def resume():
             return redirect(url_for("main.resume"))
 
         # --- Send email ---
-        subject = f"Resume for Don Fox - {resume_format.upper()}"
+        format_label = "PDF" if resume_format == "pdf" else "DOCX"
+        filename = "Resume.v3.7.pdf" if resume_format == "pdf" else "Resume.v3.7.docx"
+        subject = f"Resume for Don Fox - {format_label}"
         body = (
             f"Hello{' ' + user_name if user_name else ''},\n\n"
             "Thank you for your interest in my professional background. "
-            f"I've attached my resume in {resume_format.upper()} format as requested.\n\n"
+            f"I've attached my resume in {format_label} format as requested.\n\n"
             "Feel free to reach out if you have any questions or would like to discuss "
             "potential opportunities.\n\n"
             "Best regards,\n"
@@ -78,7 +90,6 @@ def resume():
             "donfox1@mac.com\n"
             "(865) 360-0089"
         )
-        filename = "Resume.v3.7.pdf" if resume_format == "pdf" else "Resume.v3.7.docx"
         attachment_path = os.path.join(current_app.static_folder, "files", filename)
 
         mail = current_app.extensions.get("mail")
