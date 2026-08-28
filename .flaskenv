@@ -1,3 +1,3 @@
-FLASK_APP=app.py
+FLASK_APP=resume_site
 FLASK_ENV=development
 FLASK_DEBUG=1

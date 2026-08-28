@@ -82,6 +82,11 @@ def create_app(config_object: dict | None = None) -> Flask:
         return {"now": datetime.now}
 
     # --- Error handlers ---
+    @app.errorhandler(403)
+    def handle_403_error(e):
+        app.logger.warning(f"403 Forbidden: {e}")
+        return render_template("403.html"), 403
+
     @app.errorhandler(404)
     def handle_404_error(e):
         return render_template("404.html"), 404
