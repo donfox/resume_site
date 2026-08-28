@@ -12,11 +12,12 @@ from flask import (
     flash,
     current_app,
     Response,
+    send_from_directory,
 )
 from sqlalchemy import text
 
 from .models import db, EmailRequest
-from .utils import send_email, validate_email
+from .utils import validate_email
 
 logger = logging.getLogger(__name__)
 main_bp = Blueprint("main", __name__)
@@ -28,7 +29,7 @@ def index():
     return render_template("index.html")
 
 
-# Form to request resume delivery by email
+# Form to request a resume download
 @main_bp.route("/resume", methods=["GET", "POST"])
 def resume():
     if request.method == "POST":
@@ -70,46 +71,17 @@ def resume():
             flash("An error occurred. Please try again.", "danger")
             return redirect(url_for("main.resume"))
 
-        # --- Send email ---
-        format_label = "PDF" if resume_format == "pdf" else "DOCX"
+        # --- Serve the file as a download ---
         filename = "Resume.v3.7.pdf" if resume_format == "pdf" else "Resume.v3.7.docx"
-        subject = f"Resume for Don Fox - {format_label}"
-        body = (
-            f"Hello{' ' + user_name if user_name else ''},\n\n"
-            "Thank you for your interest in my professional background. "
-            f"I've attached my resume in {format_label} format as requested.\n\n"
-            "Feel free to reach out if you have any questions or would like to discuss "
-            "potential opportunities.\n\n"
-            "Best regards,\n"
-            "Don Fox\n"
-            "donfox1@mac.com\n"
-            "(865) 360-0089"
-        )
-        attachment_path = os.path.join(current_app.static_folder, "files", filename)
+        files_dir = os.path.join(current_app.static_folder, "files")
+        attachment_path = os.path.join(files_dir, filename)
 
-        mail = current_app.extensions.get("mail")
-        if not mail:
-            current_app.logger.error("Mail extension not initialized!")
-            flash(
-                "Email service is unavailable right now. Please try again later.",
-                "danger",
-            )
+        if not os.path.isfile(attachment_path):
+            current_app.logger.error("Resume file not found: %s", attachment_path)
+            flash("That resume file is unavailable right now. Please try again later.", "danger")
             return redirect(url_for("main.resume"))
 
-        success, message = send_email(mail, user_email, subject, body, attachment_path)
-
-        # --- Flash exactly one message ---
-        if success:
-            if already_requested:
-                flash(
-                    "You've already requested a resume. Sending another copy!", "info"
-                )
-            else:
-                flash(f"Your resume was sent to {user_email}.", "success")
-        else:
-            flash(f"Could not send email: {message}", "danger")
-
-        return redirect(url_for("main.resume"))
+        return send_from_directory(files_dir, filename, as_attachment=True)
 
     return render_template("resume.html")
 
