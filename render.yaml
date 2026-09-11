@@ -16,22 +16,6 @@ services:
           property: connectionString
       - key: ADMIN_PASSWORD
         sync: false
-      - key: BREVO_MAIL_SERVER
-        sync: false
-      - key: BREVO_MAIL_USERNAME
-        sync: false
-      - key: BREVO_MAIL_PASSWORD
-        sync: false
-      - key: BREVO_MAIL_PORT
-        sync: false
-      - key: BREVO_MAIL_TIMEOUT
-        sync: false
-      - key: BREVO_MAIL_USE_TLS
-        sync: false
-      - key: BREVO_MAIL_DEFAULT_SENDER
-        sync: false
-      - key: BREVO_API_KEY
-        sync: false
 
 databases:
   - name: resume-site-db

@@ -2,6 +2,7 @@
 import os
 import sys
 import tempfile
+
 import pytest
 
 # Ensure repo root on path
@@ -54,22 +55,15 @@ def app(test_db_path, monkeypatch):
         "DEBUG": False,
         "SQLALCHEMY_DATABASE_URI": f"sqlite:///{test_db_path}",
         "SQLALCHEMY_TRACK_MODIFICATIONS": False,
-        "MAIL_SUPPRESS_SEND": True,
-        # Force the Flask-Mail/SMTP code path in resume_site.utils.send_email
-        # instead of a live Brevo API call, regardless of the shell environment.
-        "BREVO_API_KEY": None,
-        "MAIL_SERVER": "localhost",
-        "MAIL_PORT": 8025,
-        "MAIL_USE_TLS": False,
-        "MAIL_USE_SSL": False,
-        "MAIL_DEFAULT_SENDER": os.getenv("MAIL_DEFAULT_SENDER", "test@example.com"),
         "LOG_LEVEL": "DEBUG",
     }
 
     # Build the Flask app
     if _create_app is not None:
         try:
-            flask_app = _create_app(testing=True, config_overrides=config_overrides)  # your create_app has no kwargs
+            flask_app = _create_app(
+                testing=True, config_overrides=config_overrides
+            )  # your create_app has no kwargs
         except TypeError:
             flask_app = _create_app()
             flask_app.config.update(config_overrides)
@@ -86,10 +80,12 @@ def app(test_db_path, monkeypatch):
         db = None
         try:
             from resume_site.extensions import db as _db  # type: ignore
+
             db = _db
         except Exception:
             try:
                 from app.extensions import db as _db  # type: ignore
+
                 db = _db
             except Exception:
                 pass

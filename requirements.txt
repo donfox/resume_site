@@ -1,20 +1,15 @@
 # Core web framework
 Flask==3.0.3
- 
+
 # Production WSGI server
 gunicorn==22.0.0
- 
+
 # Database and ORM
 Flask-SQLAlchemy==3.1.1
 SQLAlchemy==2.0.49
 psycopg[binary]==3.2.10   # PostgreSQL driver
 Flask-Migrate==4.0.7      # DB migrations via Alembic
 alembic==1.13.2
- 
-# Email
-Flask-Mail==0.10.0
-requests==2.32.3
 
 # Environment variables
 python-dotenv==1.0.1
- 

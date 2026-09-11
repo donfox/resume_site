@@ -1,17 +1,16 @@
 # resume_site/__init__.py
-import os
 import logging
+from datetime import datetime
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
-from datetime import datetime
 
-from flask import Flask, render_template
 from dotenv import load_dotenv
+from flask import Flask, render_template
 
 from config import Config
-from .extensions import db, mail, migrate
-from .routes import main_bp, email_requests
 
+from .extensions import db, migrate
+from .routes import email_requests, main_bp
 
 # Load .env next to project root (repo root = parent of resume_site/)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -37,12 +36,6 @@ def create_app(config_object: dict | None = None) -> Flask:
 
     # Register Flask-Migrate CLI
     migrate.init_app(app, db)
-
-    # Mail (tolerate missing creds in some envs)
-    try:
-        mail.init_app(app)
-    except Exception:
-        pass
 
     # --- Logging ---
     _configure_logging(app)
