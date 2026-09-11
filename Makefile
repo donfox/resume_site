@@ -2,7 +2,7 @@
 # Makefile for dev/prod tasks
 # --------------------------
 
-.PHONY: install dev db-create db-drop db-reset db-status db-backup db-restore run test lint format pre-commit
+.PHONY: install dev db-create db-drop db-reset db-status db-backup db-restore run test lint format
 .DEFAULT_GOAL := help
 
 PYTHON := python3
@@ -11,12 +11,11 @@ help:
 	@echo ""
 	@echo "Available commands:"
 	@echo "  make install     - install package (editable) + requirements"
-	@echo "  make dev         - install requirements + pre-commit hooks"
+	@echo "  make dev         - install requirements"
 	@echo "  make run         - run Flask dev server"
 	@echo "  make test        - run tests"
 	@echo "  make lint        - ruff check"
 	@echo "  make format      - black + ruff --fix"
-	@echo "  make pre-commit  - run all pre-commit hooks"
 	@echo "  make db-create   - create dev DB tables"
 	@echo "  make db-drop     - DROP dev DB tables (requires CONFIRM=YES)"
 	@echo "  make db-status   - show dev.db size and table count"
@@ -31,7 +30,6 @@ install:
 
 dev:
 	$(PYTHON) -m pip install -r requirements.txt || true
-	pre-commit install || true
 
 db-create:
 	$(PYTHON) scripts/dev_db.py create
@@ -48,18 +46,7 @@ db-drop:
 	@echo "✅ Tables dropped."
 
 db-status:
-	@echo "📦 Checking instance/dev.db..."
-	@ls -lh instance/dev.db 2>/dev/null || { echo "❌ instance/dev.db not found"; exit 0; }
-	@echo "📊 Table count:"
-	@$(PYTHON) - <<'PYCODE'
-import sqlite3, os
-p = "instance/dev.db"
-if os.path.exists(p):
-    con = sqlite3.connect(p); cur = con.cursor()
-    cur.execute("SELECT count(*) FROM sqlite_master WHERE type='table';")
-    print("   tables:", cur.fetchone()[0])
-    con.close()
-PYCODE
+	$(PYTHON) scripts/dev_db.py status
 
 db-backup:
 	@echo "🗄️ Backing up instance/dev.db..."
@@ -100,6 +87,3 @@ lint:
 format:
 	black .
 	ruff check . --fix
-
-pre-commit:
-	pre-commit run --all-files

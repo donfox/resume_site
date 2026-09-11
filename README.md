@@ -1,7 +1,7 @@
 # Personal Website Flask App
 
 A personal portfolio/resume web application built using Flask.  
-It serves a homepage, résumé, references, and book reviews, with support for email form submissions, request logging, and a SQLite-backed database.
+It serves a homepage, résumé, references, and book reviews, with a resume download request form, request logging, and a Postgres-backed database (SQLite as a local dev fallback).
 
 ---
 
@@ -9,19 +9,19 @@ It serves a homepage, résumé, references, and book reviews, with support for e
 - Homepage with custom content
 - Résumé rendered from templates
 - References and book reviews
-- Email request submission form (Flask-Mail)
+- Resume download form (serves the PDF/DOCX directly; logs the request)
 - Logging to file and stdout
-- SQLite database for request tracking
-- Developer tooling (Makefile, pre-commit hooks, tests)
+- Postgres database for request tracking (SQLite in dev)
+- Developer tooling (Makefile, ruff/black, tests)
 
 ---
 
 ## 🛠️ Tech Stack
 - Python 3.11+
 - Flask 3.x
-- Flask-Mail
 - Flask-SQLAlchemy
-- SQLite
+- Postgres (production), SQLite (local dev fallback)
+- Alembic / Flask-Migrate for schema migrations
 - HTML/CSS + Jinja2 templates
 
 ---
@@ -29,7 +29,7 @@ It serves a homepage, résumé, references, and book reviews, with support for e
 ## 📁 Project Structure
 ```
 .
-├── app.py                  # Dev entry point
+├── wsgi.py                  # App entry point (dev + production)
 ├── config.py               # App configuration
 ├── resume_site/            # Core app package
 │   ├── __init__.py
@@ -46,7 +46,7 @@ It serves a homepage, résumé, references, and book reviews, with support for e
 ├── tests/                  # Pytest unit tests
 ├── pyproject.toml          # Packaging metadata
 ├── requirements.txt        # Runtime dependencies
-├── Makefile                # Task runner (dev/prod commands)yes
+├── Makefile                # Task runner (dev/prod commands)
 └── README.md               # Project description
 ```
 
@@ -89,12 +89,24 @@ make run
 
 ---
 
+## 🗄️ Database Migrations
+Schema changes are managed with Flask-Migrate/Alembic (files under `migrations/`).
+
+```bash
+flask --app resume_site db migrate -m "describe the change"   # generate a new migration
+flask --app resume_site db upgrade                            # apply pending migrations
+flask --app resume_site db downgrade                          # roll back one migration
+```
+
+In production, `render.yaml`'s build step runs `flask db upgrade` automatically on every deploy, so committed migrations are applied before the new app version starts.
+
+---
+
 ## 🧪 Tests & Linting
 ```bash
 make test       # run pytest
 make lint       # check style (ruff)
 make format     # autoformat (black + ruff --fix)
-make pre-commit # run all pre-commit hooks
 ```
 
 ---
