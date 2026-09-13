@@ -2,6 +2,7 @@
 
 import os
 import logging
+import secrets
 from functools import wraps
 from flask import (
     Blueprint,
@@ -97,7 +98,11 @@ def references():
 
 
 def check_auth(password):
-    return password == os.getenv("ADMIN_PASSWORD")
+    # compare_digest avoids leaking password length/prefix via timing
+    admin_password = os.getenv("ADMIN_PASSWORD")
+    return bool(password) and bool(admin_password) and secrets.compare_digest(
+        password, admin_password
+    )
 
 
 def authenticate():
