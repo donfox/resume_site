@@ -1,23 +1,24 @@
 # routes.py
 
-import os
 import logging
+import os
 import secrets
 from functools import wraps
+
 from flask import (
     Blueprint,
-    render_template,
-    redirect,
-    url_for,
-    request,
-    flash,
-    current_app,
     Response,
+    current_app,
+    flash,
+    redirect,
+    render_template,
+    request,
     send_from_directory,
+    url_for,
 )
 from sqlalchemy import text
 
-from .models import db, EmailRequest
+from .models import EmailRequest, db
 from .utils import validate_email
 
 logger = logging.getLogger(__name__)

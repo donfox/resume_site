@@ -1,3 +1,4 @@
+<!doctype html>
 {% extends "base.html" %}
 {% block title %}Resume{% endblock %}
 
@@ -67,8 +68,10 @@
     [
     "July 2025–August 2026: Developed a proof-of-concept Provider Vault medical enrollment website,
     combining Elixir/Phoenix for scalability and concurrency with Python for AI-assisted development
-    and prompt engineering. Subsequently developed the Medicaid Claims Checker, a fraud detection
-    tool written in Haskell (core logic) with Elixir/Phoenix for I/O, submitted via RFI
+    and prompt engineering. Subsequently developed the Medicaid Claims Checker, which pairs a Haskell
+    rule engine with an Elixir/Phoenix front end (web UI, X12/837P claim parsing, provider validation,
+    and batch processing), with an integration point for external ML risk scoring; claims are flagged
+    for human review before a determination is finalized. Submitted via RFI
     (Request for Information) to several state governments. Mentoring interns on complementary healthcare IT projects, with topics
     including machine learning and prompt engineering.
     <strong>Tech:</strong> Haskell, Elixir, Phoenix, Python 3.11, PostgreSQL",
