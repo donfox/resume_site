@@ -2,8 +2,10 @@ services:
   - type: web
     name: resume_site
     runtime: python
-    buildCommand: "pip install -r requirements.txt && flask db upgrade"
-    startCommand: "gunicorn wsgi:app -w 2 -k gthread --threads 8 --timeout 60
+    buildCommand: "pip install -r requirements.txt"
+    # Migrations run at start, not build: Render's build step can't reach the
+    # database over the private network (and preDeployCommand is paid-only).
+    startCommand: "flask db upgrade && gunicorn wsgi:app -w 2 -k gthread --threads 8 --timeout 60
       --graceful-timeout 30 -b 0.0.0.0:$PORT"
     envVars:
       - key: FLASK_ENV

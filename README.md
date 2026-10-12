@@ -98,7 +98,7 @@ flask --app resume_site db upgrade                            # apply pending mi
 flask --app resume_site db downgrade                          # roll back one migration
 ```
 
-In production, `render.yaml`'s build step runs `flask db upgrade` automatically on every deploy, so committed migrations are applied before the new app version starts.
+In production, `render.yaml`'s start command runs `flask db upgrade` automatically on every deploy, so committed migrations are applied before the new app version starts.
 
 ---
 
