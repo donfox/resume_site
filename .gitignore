@@ -76,7 +76,6 @@ Miniconda*-MacOSX-arm64.sh
 # ---------------------------# Resume backup / working copies
 # ---------------------------
 static/files/*.backup.docx
-static/files/*.pages
 static/files/* copy*.docx
 static/files/~$*.docx
 
