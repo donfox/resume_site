@@ -1,8 +1,8 @@
-{% macro job_entry(employer, location, dates, url, description, bullets, bullets_render='auto', anchor=None) %}
+{% macro job_entry(employer, location, dates, url, description, bullets, bullets_render='auto', anchor=None, title=None) %}
 <article class="job-entry" {% if anchor %} id="{{ anchor }}" {% endif %}>
   <details>
     <summary>
-      <strong>{{ employer }}</strong>{% if location %} — {{ location }}{% endif %}{% if dates %} — {{ dates }}{% endif
+      <strong>{{ employer }}</strong>{% if title %} — <em>{{ title }}</em>{% endif %}{% if location %} — {{ location }}{% endif %}{% if dates %} — {{ dates }}{% endif
       %}
     </summary>
 
