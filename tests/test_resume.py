@@ -28,13 +28,7 @@ def test_resume_post_downloads_file(client, monkeypatch):
     with client.application.app_context():
         rows = EmailRequest.query.filter_by(email="donfox1@mac.com").all()
         assert len(rows) == 1
-        count_after_two = rows[0].request_count
-
-    client.post("/resume", data=payload, follow_redirects=False)
-    with client.application.app_context():
-        rows = EmailRequest.query.filter_by(email="donfox1@mac.com").all()
-        assert len(rows) == 1
-        assert rows[0].request_count == count_after_two + 1
+        assert rows[0].request_count == 2
 
 
 # --- Invalid email path: should redirect back to /resume ---
