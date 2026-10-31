@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Requests</title>
+    <title>Resume Requests</title>
 </head>
 <body>
-    <h1>Email Requests</h1>
+    <h1>Resume Requests</h1>
     <table border="1">
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Requested At</th>
+                <th>Requests</th>
+                <th>First Requested</th>
+                <th>Last Requested</th>
+                <th>IP Address</th>
             </tr>
         </thead>
         <tbody>
@@ -20,7 +23,10 @@
             <tr>
                 <td>{{ request.name }}</td>
                 <td>{{ request.email }}</td>
-                <td>{{ request.requested_at }}</td>
+                <td>{{ request.request_count }}</td>
+                <td>{{ request.timestamp.strftime("%Y-%m-%d %H:%M UTC") }}</td>
+                <td>{{ request.last_requested_at.strftime("%Y-%m-%d %H:%M UTC") if request.last_requested_at }}</td>
+                <td>{{ request.ip_address or "" }}</td>
             </tr>
             {% endfor %}
         </tbody>

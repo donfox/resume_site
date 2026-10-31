@@ -22,6 +22,20 @@ def test_resume_post_downloads_file(client, monkeypatch):
     assert resp2.status_code == 200
     assert "attachment" in resp2.headers.get("Content-Disposition", "")
 
+    # ...and be counted on the existing row rather than adding a new one
+    from resume_site.models import EmailRequest
+
+    with client.application.app_context():
+        rows = EmailRequest.query.filter_by(email="donfox1@mac.com").all()
+        assert len(rows) == 1
+        count_after_two = rows[0].request_count
+
+    client.post("/resume", data=payload, follow_redirects=False)
+    with client.application.app_context():
+        rows = EmailRequest.query.filter_by(email="donfox1@mac.com").all()
+        assert len(rows) == 1
+        assert rows[0].request_count == count_after_two + 1
+
 
 # --- Invalid email path: should redirect back to /resume ---
 def test_resume_post_invalid_email_redirects(client, monkeypatch):

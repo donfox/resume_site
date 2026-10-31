@@ -3,6 +3,7 @@
 import logging
 import os
 import secrets
+from datetime import datetime, timezone
 from functools import wraps
 
 from flask import (
@@ -16,7 +17,6 @@ from flask import (
     send_from_directory,
     url_for,
 )
-from sqlalchemy import text
 
 from .models import EmailRequest, db
 from .utils import validate_email
@@ -56,17 +56,18 @@ def resume():
 
         # --- Check/record request ---
         try:
-            db.session.execute(text("SELECT 1"))
             existing_request = EmailRequest.query.filter_by(email=user_email).first()
-            already_requested = existing_request is not None
-
-            if not already_requested:
+            if existing_request:
+                existing_request.request_count += 1
+                existing_request.last_requested_at = datetime.now(timezone.utc)
+                existing_request.ip_address = ip_address
+            else:
                 db.session.add(
                     EmailRequest(
                         name=user_name, email=user_email, ip_address=ip_address
                     )
                 )
-                db.session.commit()
+            db.session.commit()
         except Exception as e:
             db.session.rollback()
             current_app.logger.error(f"DB error saving resume request: {e}")
@@ -129,7 +130,9 @@ def email_requests():
     # (config.py), not via @main_bp.route — the URL is obscurity on top of
     # requires_auth, never a substitute for it.
     try:
-        requests = EmailRequest.query.all()
+        requests = EmailRequest.query.order_by(
+            EmailRequest.last_requested_at.desc()
+        ).all()
         return render_template("email_requests.html", email_requests=requests)
     except Exception as e:
         current_app.logger.error(f"Failed to retrieve email requests: {e}")

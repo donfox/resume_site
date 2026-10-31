@@ -21,7 +21,11 @@ class EmailRequest(db.Model):
     ip_address = db.Column(db.String(64))
     timestamp = db.Column(
         db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
-    )  # UTC timestamp
+    )  # UTC timestamp of first request
+    request_count = db.Column(db.Integer, nullable=False, default=1, server_default="1")
+    last_requested_at = db.Column(
+        db.DateTime, default=lambda: datetime.now(timezone.utc)
+    )  # UTC timestamp of most recent request
 
     def __repr__(self):
         return f"<EmailRequest {self.name}, {self.email}>"
