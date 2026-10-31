@@ -6,6 +6,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from flask import Flask, render_template
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from config import Config
 
@@ -27,6 +28,10 @@ def create_app(config_object: dict | None = None) -> Flask:
     app.config.from_object(Config)
     if config_object:
         app.config.update(config_object)
+
+    # Render sits behind a proxy; trust its X-Forwarded-For header so
+    # request.remote_addr is the visitor's IP, not 127.0.0.1.
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
 
     # --- Extensions ---
     db.init_app(app)
